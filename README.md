@@ -9,7 +9,7 @@ Static site files for the SYCCO ecosystem.
 | `index.html` | `/` | Main landing page — 12-month wealth roadmap assessment |
 | `affiliates.html` | `/affiliates` | Affiliate program — 40% commission model |
 | `favicon.svg` | `/favicon.svg` | SYCCO "S" favicon |
-
+ 
 ## What's included
 
 - ✅ GA4 analytics (`G-T3H1725GD2`)
