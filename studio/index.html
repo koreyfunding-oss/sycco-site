@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYCCO Creative Studio — AI Ad Generator</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Tokens ────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060608;--surface:#0d0d10;--card:#111116;--card2:#16161b;
+  --border:rgba(255,255,255,0.07);--border2:rgba(0,212,255,0.2);
+  --cyan:#00D4FF;--cyan-dim:#009dbf;--gold:#C8A96E;
+  --silver:#9BA3AF;--white:#F0F0F4;--muted:rgba(240,240,244,0.45);
+  --faint:rgba(240,240,244,0.05);--red:#FF5B5B;--green:#3DD68C;
+  --r:0px;
+}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);-webkit-font-smoothing:antialiased;font-size:14px}
+body::before{content:'';position:fixed;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(0,212,255,0.04) 0%,transparent 65%);pointer-events:none;z-index:0}
+button{cursor:pointer;font-family:'DM Sans',sans-serif}
+input,select,textarea{font-family:'DM Sans',sans-serif}
+a{color:var(--cyan);text-decoration:none}
+
+/* ─── Auth Screen ───────────────────────────────────────────────── */
+#authScreen{position:fixed;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-box{width:100%;max-width:400px;background:var(--card);border:1px solid var(--border);padding:36px}
+.auth-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.14em;color:var(--cyan);margin-bottom:4px}
+.auth-tagline{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:32px}
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:24px}
+.auth-tab{flex:1;padding:8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.2s,border-color 0.2s}
+.auth-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.auth-field{margin-bottom:14px}
+.auth-label{display:block;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.auth-input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--white);padding:11px 13px;font-size:13px;outline:none;transition:border-color 0.2s}
+.auth-input:focus{border-color:var(--cyan)}
+.auth-input::placeholder{color:rgba(240,240,244,0.2)}
+.auth-btn{width:100%;padding:14px;background:var(--cyan);color:#000;font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;border:none;margin-top:8px;transition:background 0.2s,transform 0.15s}
+.auth-btn:hover{background:var(--cyan-dim);transform:translateY(-1px)}
+.auth-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.auth-err{font-size:12px;color:var(--red);margin-top:10px;min-height:16px}
+.auth-note{font-size:11px;color:var(--muted);text-align:center;margin-top:16px}
+
+/* ─── App Shell ─────────────────────────────────────────────────── */
+#appShell{display:none;min-height:100vh;flex-direction:column}
+#appShell.visible{display:flex}
+
+/* ─── Top Nav ───────────────────────────────────────────────────── */
+.top-nav{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:20px;flex-shrink:0;position:sticky;top:0;background:rgba(6,6,8,0.95);backdrop-filter:blur(10px);z-index:50}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.14em;color:var(--cyan)}
+.nav-logo span{color:var(--gold)}
+.nav-divider{width:1px;height:20px;background:var(--border)}
+.nav-links{display:flex;gap:2px;flex:1}
+.nav-link{padding:5px 12px;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);background:none;border:none;border-radius:var(--r);transition:color 0.2s,background 0.2s}
+.nav-link:hover{color:var(--white);background:var(--faint)}
+.nav-link.active{color:var(--cyan);background:rgba(0,212,255,0.08)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-user{font-size:11px;color:var(--muted)}
+.nav-signout{padding:5px 12px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);transition:all 0.2s}
+.nav-signout:hover{color:var(--red);border-color:var(--red)}
+.usage-pill{font-size:10px;padding:3px 10px;border:1px solid var(--border2);color:var(--cyan);letter-spacing:0.08em}
+
+/* ─── Main Layout ───────────────────────────────────────────────── */
+.app-body{flex:1;display:grid;grid-template-columns:220px 1fr;min-height:0}
+
+/* ─── Sidebar ───────────────────────────────────────────────────── */
+.sidebar{border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;gap:2px}
+.sidebar-section{padding:0 12px 6px;margin-bottom:2px}
+.sidebar-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);padding:0 8px;margin-bottom:4px}
+.sidebar-btn{width:100%;text-align:left;padding:8px 12px;font-size:12px;font-weight:400;color:var(--muted);background:none;border:none;border-radius:var(--r);transition:all 0.2s;display:flex;align-items:center;gap:8px}
+.sidebar-btn:hover{color:var(--white);background:var(--faint)}
+.sidebar-btn.active{color:var(--cyan);background:rgba(0,212,255,0.07)}
+.sidebar-btn .icon{width:14px;text-align:center;opacity:0.6;font-size:13px}
+.sidebar-new{width:calc(100% - 24px);margin:0 12px 16px;padding:10px;background:var(--cyan);color:#000;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:none;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s}
+.sidebar-new:hover{background:var(--cyan-dim)}
+
+/* ─── Main Content ──────────────────────────────────────────────── */
+.main-content{overflow-y:auto;padding:28px}
+
+/* ─── Panel: Generate ───────────────────────────────────────────── */
+#panelGenerate{display:block}
+#panelHistory{display:none}
+#panelSettings{display:none}
+
+.gen-header{margin-bottom:24px}
+.gen-eye{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
+.gen-title{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--white);margin-bottom:4px}
+.gen-sub{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Form grid */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.form-grid.full{grid-template-columns:1fr}
+.form-grid.three{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.f-label{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)}
+.f-input,.f-select,.f-textarea{background:var(--surface);border:1px solid var(--border);color:var(--white);padding:10px 12px;font-size:13px;outline:none;transition:border-color 0.2s;-webkit-appearance:none}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--cyan)}
+.f-input::placeholder,.f-textarea::placeholder{color:rgba(240,240,244,0.18)}
+.f-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2300D4FF' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px}
+.f-select option{background:#111116}
+.f-textarea{resize:vertical;min-height:80px;line-height:1.55}
+.req{color:var(--cyan)}
+
+/* Mode presets */
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
+.mode-opt{padding:10px 8px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all 0.18s;text-align:center;user-select:none}
+.mode-opt:hover,.mode-opt.on{border-color:var(--cyan);background:rgba(0,212,255,0.06)}
+.mode-opt.on .mode-icon{color:var(--cyan)}
+.mode-icon{font-size:16px;margin-bottom:3px}
+.mode-name{font-size:10px;font-weight:500;letter-spacing:0.06em;color:var(--muted);line-height:1.3}
+.mode-opt.on .mode-name{color:var(--cyan)}
+
+/* Generate button */
+.gen-btn-row{margin-top:20px;display:flex;align-items:center;gap:12px}
+.gen-btn{flex:1;padding:16px;background:var(--cyan);color:#000;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;transition:background 0.2s,transform 0.15s;display:flex;align-items:center;justify-content:center;gap:10px}
+.gen-btn:hover{background:var(--cyan-dim);transform:translateY(-1px)}
+.gen-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.gen-limit-note{font-size:11px;color:var(--muted)}
+
+/* ─── Output Section ────────────────────────────────────────────── */
+#outputSection{display:none;margin-top:28px}
+.output-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.output-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white)}
+.output-subtitle{font-size:12px;color:var(--muted);margin-top:2px}
+.output-actions{display:flex;gap:8px}
+.btn-outline{padding:7px 14px;font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--muted);transition:all 0.2s}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-gold{background:var(--gold);color:#000;border-color:var(--gold)}
+.btn-gold:hover{background:var(--gold);opacity:0.85}
+
+.output-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.output-grid.wide{grid-template-columns:1fr}
+.out-card{background:var(--card);border:1px solid var(--border);padding:16px}
+.out-card:hover{border-color:rgba(0,212,255,0.2)}
+.out-label{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.out-copy{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);padding:3px 8px;cursor:pointer;transition:all 0.2s}
+.out-copy:hover{color:var(--cyan);border-color:var(--cyan)}
+.out-copy.copied{color:var(--green);border-color:var(--green)}
+.out-content{font-size:13px;font-weight:300;color:var(--white);line-height:1.7;white-space:pre-wrap}
+.out-tag-list{display:flex;flex-wrap:wrap;gap:5px}
+.out-tag{font-size:11px;color:var(--cyan);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.18);padding:2px 8px;cursor:pointer;transition:background 0.2s}
+.out-tag:hover{background:rgba(0,212,255,0.15)}
+.hook-list{display:flex;flex-direction:column;gap:6px}
+.hook-item{padding:10px 12px;background:var(--card2);border:1px solid var(--border);font-size:13px;color:var(--white);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hook-text{flex:1;line-height:1.5}
+.angle-list{display:flex;flex-direction:column;gap:8px}
+.angle-item{padding:12px;background:var(--card2);border:1px solid var(--border)}
+.angle-name{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:4px}
+.angle-hook{font-size:14px;font-weight:500;color:var(--white);margin-bottom:4px}
+.angle-concept{font-size:12px;color:var(--muted)}
+.scene-list{display:flex;flex-direction:column;gap:6px}
+.scene-item{padding:8px 12px;background:var(--card2);border-left:2px solid var(--cyan);font-size:12px;color:var(--muted);line-height:1.55}
+
+/* ─── Upgrade Banner ────────────────────────────────────────────── */
+#upgradeBanner{display:none;background:linear-gradient(135deg,#0d1a1f,#0f1a0a);border:1px solid var(--border2);padding:24px;margin-bottom:20px;text-align:center}
+.upgrade-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--cyan);margin-bottom:6px}
+.upgrade-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+.upgrade-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.plan-card{background:var(--card);border:1px solid var(--border);padding:14px 10px;text-align:center}
+.plan-card.featured-plan{border-color:var(--cyan)}
+.plan-price{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--cyan);line-height:1}
+.plan-name{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.plan-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* ─── History Panel ─────────────────────────────────────────────── */
+.hist-grid{display:flex;flex-direction:column;gap:8px}
+.hist-card{background:var(--card);border:1px solid var(--border);padding:16px;cursor:pointer;transition:border-color 0.2s;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.hist-card:hover{border-color:rgba(0,212,255,0.3)}
+.hist-name{font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px}
+.hist-meta{font-size:11px;color:var(--muted)}
+.hist-badge{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--border2);color:var(--cyan);flex-shrink:0}
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:0.4}
+.empty-text{font-size:13px;line-height:1.6}
+
+/* ─── Settings Panel ────────────────────────────────────────────── */
+.settings-section{background:var(--card);border:1px solid var(--border);padding:20px;margin-bottom:12px}
+.settings-title{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);margin-bottom:14px}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.settings-row:last-child{border-bottom:none}
+.settings-key{font-size:12px;color:var(--muted)}
+.settings-val{font-size:12px;color:var(--white)}
+
+/* ─── Loading overlay ───────────────────────────────────────────── */
+#loadingOverlay{display:none;position:fixed;inset:0;background:rgba(6,6,8,0.9);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#loadingOverlay.show{display:flex}
+.loading-ring{width:48px;height:48px;border:2px solid rgba(0,212,255,0.15);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.9s linear infinite}
+.loading-text{font-size:13px;color:var(--muted);animation:pulse 1.5s ease infinite}
+.loading-detail{font-size:11px;color:rgba(240,240,244,0.25);letter-spacing:0.06em}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ─── Toast ─────────────────────────────────────────────────────── */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--card2);border:1px solid var(--border);padding:12px 18px;font-size:12px;color:var(--white);z-index:300;transform:translateY(20px);opacity:0;transition:all 0.3s;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{border-color:var(--green);color:var(--green)}
+#toast.error{border-color:var(--red);color:var(--red)}
+
+/* ─── Responsive ────────────────────────────────────────────────── */
+@media(max-width:860px){
+  .app-body{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .form-grid.three{grid-template-columns:1fr 1fr}
+  .output-grid{grid-template-columns:1fr}
+  .upgrade-plans{grid-template-columns:1fr}
+  .mode-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:520px){
+  .form-grid{grid-template-columns:1fr}
+  .mode-grid{grid-template-columns:repeat(3,1fr)}
+  .top-nav{padding:0 14px}
+  .main-content{padding:18px 14px}
+}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKDCNE2RP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LEKDCNE2RP');
+</script>
+</head>
+<body>
+
+<!-- ── Auth Screen ──────────────────────────────────────────────────── -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">SYCCO <span style="color:var(--gold)">Creative Studio</span></div>
+    <div class="auth-tagline">AI Ad Generator · Creative Command Center</div>
+    <div style="margin-bottom:28px">
+      <button class="auth-btn" onclick="doLogin()" style="margin-bottom:10px">Sign In →</button>
+      <button class="auth-btn" onclick="doSignup()" style="background:transparent;border:1px solid var(--cyan);color:var(--cyan)">Create Account →</button>
+    </div>
+    <div class="auth-note">
+      <a href="/" style="font-size:11px;color:var(--muted)">← Back to SYCCO.AI</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Loading Overlay ──────────────────────────────────────────────── -->
+<div id="loadingOverlay">
+  <div class="loading-ring"></div>
+  <div class="loading-text">Generating your creative package...</div>
+  <div class="loading-detail" id="loadingDetail">Claude AI is building your campaign</div>
+</div>
+
+<!-- ── Toast ────────────────────────────────────────────────────────── -->
+<div id="toast"></div>
+
+<!-- ── App Shell ────────────────────────────────────────────────────── -->
+<div id="appShell">
+
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div class="nav-logo">SYCCO <span>Creative</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="showPanel('generate',this)">Generate</button>
+      <button class="nav-link" onclick="showPanel('history',this)">My Campaigns</button>
+      <button class="nav-link" onclick="showPanel('settings',this)">Settings</button>
+    </div>
+    <div class="nav-right">
+      <div class="usage-pill" id="usagePill">3 free generations</div>
+      <div class="nav-user" id="navUser"></div>
+      <button class="nav-signout" onclick="doSignout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- App Body -->
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="sidebar-new" onclick="resetForm()">
+        <span>+</span> New Campaign
+      </button>
+      <div class="sidebar-label">Tools</div>
+      <button class="sidebar-btn active" onclick="showPanel('generate',null)"><span class="icon">⚡</span> Ad Generator</button>
+      <button class="sidebar-btn" onclick="showPanel('history',null)"><span class="icon">📁</span> My Campaigns</button>
+      <div style="margin-top:12px" class="sidebar-label">Models</div>
+      <button class="sidebar-btn"><span class="icon">🎬</span> Kling / Seedance</button>
+      <button class="sidebar-btn"><span class="icon">🖼</span> Image Gen</button>
+      <button class="sidebar-btn"><span class="icon">🎙</span> Voiceover</button>
+      <div style="margin-top:auto;padding:16px 12px 0;border-top:1px solid var(--border)">
+        <div style="font-size:10px;color:var(--muted);line-height:1.6">SYCCO Creative Studio<br><span style="color:rgba(240,240,244,0.25)">v1.0 · AI-Powered</span></div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- ── PANEL: Generate ──────────────────────────────────────── -->
+      <div id="panelGenerate">
+        <div class="gen-header">
+          <div class="gen-eye">AI Creative Command Center</div>
+          <div class="gen-title">Generate Your Campaign</div>
+          <div class="gen-sub">Fill in your brief → Claude builds your entire creative package in seconds.</div>
+        </div>
+
+        <!-- Upgrade Banner (shown when free uses exhausted) -->
+        <div id="upgradeBanner">
+          <div class="upgrade-title">You've Used Your 3 Free Generations</div>
+          <div class="upgrade-sub">Unlock unlimited campaigns, save history, and access all creative modes.</div>
+          <div class="upgrade-plans">
+            <div class="plan-card">
+              <div class="plan-name">Starter</div>
+              <div class="plan-price">$29<span style="font-size:14px;color:var(--muted)">/mo</span></div>
+              <div class="plan-desc">50 generations/mo · All modes</div>
+            </div>
+            <div class="plan-card featured-plan">
+              <div class="plan-name">Creative Engine</div>
+              <div class="plan-price">$97<span style="font-size:14px;color:var(--muted)">/mo</span></div>
+              <div class="plan-desc">Unlimited · Save campaigns · Priority</div>
+            </div>
+            <div class="plan-card">
+              <div class="plan-name">Business Kit</div>
+              <div class="plan-price">$297<span style="font-size:14px;color:var(--muted)">/mo</span></div>
+              <div class="plan-desc">Unlimited · Team access · White-label</div>
+            </div>
+          </div>
+          <!-- TODO: Replace with your Stripe payment links -->
+          <div style="display:flex;gap:8px;justify-content:center">
+            <a href="https://buy.stripe.com/5kQbJ03VBacyact2K33ZK04" class="gen-btn" style="max-width:160px;display:inline-flex;text-decoration:none;font-size:11px" target="_blank">$29/mo →</a>
+            <a href="https://buy.stripe.com/9B6dR8ajZ1G2doF3O73ZK03" class="gen-btn" style="max-width:180px;display:inline-flex;text-decoration:none;font-size:11px" target="_blank">$97/mo — Unlock All →</a>
+          </div>
+        </div>
+
+        <!-- Brief Form -->
+        <div id="briefForm">
+          <!-- Row 1: Business + Product -->
+          <div class="form-grid">
+            <div class="field">
+              <label class="f-label">Business Name <span class="req">*</span></label>
+              <input class="f-input" id="f_biz" placeholder="e.g. Elite Solar AZ" autocomplete="off">
+            </div>
+            <div class="field">
+              <label class="f-label">Product / Service <span class="req">*</span></label>
+              <input class="f-input" id="f_product" placeholder="e.g. Residential solar installation">
+            </div>
+          </div>
+
+          <!-- Row 2: Audience + Offer -->
+          <div class="form-grid">
+            <div class="field">
+              <label class="f-label">Target Audience <span class="req">*</span></label>
+              <input class="f-input" id="f_audience" placeholder="e.g. Homeowners in AZ, 35-55, high electric bills">
+            </div>
+            <div class="field">
+              <label class="f-label">Offer / Hook</label>
+              <input class="f-input" id="f_offer" placeholder="e.g. Free energy audit + $0 down">
+            </div>
+          </div>
+
+          <!-- Row 3: CTA + Mood -->
+          <div class="form-grid">
+            <div class="field">
+              <label class="f-label">Call to Action</label>
+              <input class="f-input" id="f_cta" placeholder="e.g. Book your free quote today">
+            </div>
+            <div class="field">
+              <label class="f-label">Mood / Tone</label>
+              <input class="f-input" id="f_mood" placeholder="e.g. Urgent, aspirational, trustworthy">
+            </div>
+          </div>
+
+          <!-- Row 4: Platform + Length -->
+          <div class="form-grid three">
+            <div class="field">
+              <label class="f-label">Platform <span class="req">*</span></label>
+              <select class="f-select" id="f_platform">
+                <option value="">Select platform...</option>
+                <option>TikTok</option>
+                <option>Instagram Reels</option>
+                <option>YouTube Shorts</option>
+                <option>Facebook Ad</option>
+                <option>YouTube Ad</option>
+                <option>LinkedIn</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="f-label">Video Length <span class="req">*</span></label>
+              <select class="f-select" id="f_length">
+                <option value="">Select length...</option>
+                <option>8 seconds</option>
+                <option>15 seconds</option>
+                <option>30 seconds</option>
+                <option>60 seconds</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="f-label">Campaign Name</label>
+              <input class="f-input" id="f_campaign" placeholder="e.g. Summer Push 2025">
+            </div>
+          </div>
+
+          <!-- Creative Mode Picker -->
+          <div style="margin-bottom:6px">
+            <div class="f-label" style="margin-bottom:10px">Creative Mode <span class="req">*</span></div>
+            <div class="mode-grid" id="modeGrid">
+              <div class="mode-opt" onclick="selectMode(this,'Commercial Mode')">
+                <div class="mode-icon">📺</div>
+                <div class="mode-name">Commercial</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Luxury Brand Mode')">
+                <div class="mode-icon">💎</div>
+                <div class="mode-name">Luxury Brand</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Viral TikTok Mode')">
+                <div class="mode-icon">🔥</div>
+                <div class="mode-name">Viral TikTok</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Cinematic Trailer Mode')">
+                <div class="mode-icon">🎬</div>
+                <div class="mode-name">Cinematic</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'UGC Ad Mode')">
+                <div class="mode-icon">📱</div>
+                <div class="mode-name">UGC Ad</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Psycho Hook Mode')">
+                <div class="mode-icon">⚡</div>
+                <div class="mode-name">Psycho Hook</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Storytelling Mode')">
+                <div class="mode-icon">📖</div>
+                <div class="mode-name">Storytelling</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Dark Luxury Mode')">
+                <div class="mode-icon">🖤</div>
+                <div class="mode-name">Dark Luxury</div>
+              </div>
+              <div class="mode-opt" onclick="selectMode(this,'Comedy Ad Mode')">
+                <div class="mode-icon">😂</div>
+                <div class="mode-name">Comedy Ad</div>
+              </div>
+            </div>
+            <input type="hidden" id="f_mode" value="">
+          </div>
+
+          <div class="gen-btn-row">
+            <button class="gen-btn" id="generateBtn" onclick="generate()">
+              <span>⚡</span> Generate Creative Package
+            </button>
+            <div class="gen-limit-note" id="limitNote"></div>
+          </div>
+        </div>
+
+        <!-- Output Section -->
+        <div id="outputSection">
+          <div class="output-header">
+            <div>
+              <div class="output-title" id="outputTitle">Your Creative Package</div>
+              <div class="output-subtitle" id="outputMeta"></div>
+            </div>
+            <div class="output-actions">
+              <button class="btn-outline" onclick="copyAll()">Copy All</button>
+              <button class="btn-outline btn-gold" onclick="resetForm()">New Campaign</button>
+            </div>
+          </div>
+
+          <!-- Video Prompt -->
+          <div style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">
+                🎬 Cinematic Video Prompt
+                <button class="out-copy" onclick="copyField('out_video','Copy')">Copy</button>
+              </div>
+              <div class="out-content" id="out_video"></div>
+            </div>
+          </div>
+
+          <!-- Scene Breakdown -->
+          <div style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">
+                🎞 Scene Breakdown
+                <button class="out-copy" onclick="copyField('out_scenes','Copy')">Copy</button>
+              </div>
+              <div class="scene-list" id="out_scenes"></div>
+            </div>
+          </div>
+
+          <!-- Two column: Voiceover + Image Prompt -->
+          <div class="output-grid" style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">
+                🎤 Voiceover Script
+                <button class="out-copy" onclick="copyField('out_vo','Copy')">Copy</button>
+              </div>
+              <div class="out-content" id="out_vo"></div>
+            </div>
+            <div class="out-card">
+              <div class="out-label">
+                🖼 Image Prompt
+                <button class="out-copy" onclick="copyField('out_img','Copy')">Copy</button>
+              </div>
+              <div class="out-content" id="out_img"></div>
+            </div>
+          </div>
+
+          <!-- Hooks -->
+          <div style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">⚡ Scroll-Stopping Hooks</div>
+              <div class="hook-list" id="out_hooks"></div>
+            </div>
+          </div>
+
+          <!-- Caption + Hashtags -->
+          <div class="output-grid" style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">
+                💬 Platform Caption
+                <button class="out-copy" onclick="copyField('out_caption','Copy')">Copy</button>
+              </div>
+              <div class="out-content" id="out_caption"></div>
+            </div>
+            <div class="out-card">
+              <div class="out-label">
+                # Hashtags
+                <button class="out-copy" onclick="copyTags()">Copy All</button>
+              </div>
+              <div class="out-tag-list" id="out_tags"></div>
+            </div>
+          </div>
+
+          <!-- CTAs + Landing Page -->
+          <div class="output-grid" style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">📢 CTA Variations</div>
+              <div class="hook-list" id="out_ctas"></div>
+            </div>
+            <div class="out-card">
+              <div class="out-label">
+                🌐 Landing Page Copy
+                <button class="out-copy" onclick="copyField('out_landing','Copy')">Copy</button>
+              </div>
+              <div class="out-content" id="out_landing"></div>
+            </div>
+          </div>
+
+          <!-- Ad Angles -->
+          <div style="margin-bottom:10px">
+            <div class="out-card">
+              <div class="out-label">🎯 3 Ad Angles</div>
+              <div class="angle-list" id="out_angles"></div>
+            </div>
+          </div>
+
+          <div style="text-align:center;padding:20px 0">
+            <button class="gen-btn" style="max-width:240px;margin:0 auto" onclick="resetForm()">Generate Another →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: History ─────────────────────────────────────── -->
+      <div id="panelHistory" style="display:none">
+        <div class="gen-header">
+          <div class="gen-eye">Saved Campaigns</div>
+          <div class="gen-title">My Campaigns</div>
+          <div class="gen-sub">All your generated creative packages, saved automatically.</div>
+        </div>
+        <div id="histList" class="hist-grid"></div>
+      </div>
+
+      <!-- ── PANEL: Settings ────────────────────────────────────── -->
+      <div id="panelSettings" style="display:none">
+        <div class="gen-header">
+          <div class="gen-eye">Account</div>
+          <div class="gen-title">Settings</div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-title">Account Info</div>
+          <div class="settings-row"><span class="settings-key">Email</span><span class="settings-val" id="settingsEmail">—</span></div>
+          <div class="settings-row"><span class="settings-key">Plan</span><span class="settings-val" id="settingsPlan">Free (3 generations)</span></div>
+          <div class="settings-row"><span class="settings-key">Generations Used</span><span class="settings-val" id="settingsUsage">—</span></div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-title">Upgrade Your Plan</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div class="plan-card"><div class="plan-name">Starter</div><div class="plan-price" style="font-size:22px">$29<span style="font-size:12px;color:var(--muted)">/mo</span></div><div class="plan-desc">50 gen/mo · All modes</div><a href="https://buy.stripe.com/5kQbJ03VBacyact2K33ZK04" style="display:block;margin-top:10px;padding:7px;background:var(--surface);border:1px solid var(--border);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-align:center;text-decoration:none" target="_blank">Subscribe →</a></div>
+            <div class="plan-card featured-plan"><div class="plan-name">Creative Engine</div><div class="plan-price" style="font-size:22px">$97<span style="font-size:12px;color:var(--muted)">/mo</span></div><div class="plan-desc">Unlimited · History · Priority</div><a href="https://buy.stripe.com/9B6dR8ajZ1G2doF3O73ZK03" style="display:block;margin-top:10px;padding:7px;background:var(--cyan);border:1px solid var(--cyan);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#000;text-align:center;text-decoration:none" target="_blank">Subscribe →</a></div>
+            <div class="plan-card"><div class="plan-name">Business Kit</div><div class="plan-price" style="font-size:22px">$297<span style="font-size:12px;color:var(--muted)">/mo</span></div><div class="plan-desc">Unlimited · Team · White-label</div><a href="https://buy.stripe.com/00waEW4ZF98ugARgAT3ZK02" style="display:block;margin-top:10px;padding:7px;background:var(--surface);border:1px solid var(--border);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-align:center;text-decoration:none" target="_blank">Subscribe →</a></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-title">Danger Zone</div>
+          <button class="btn-outline" style="border-color:var(--red);color:var(--red)" onclick="doSignout()">Sign Out</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────────────────────────────────────
+const FREE_LIMIT = 3; // free generations before upgrade wall
+
+// ─────────────────────────────────────────────────────────────────────────────
+let currentUser = null, generationCount = 0, selectedMode = '', lastOutput = null;
+
+// ─── localStorage helpers ─────────────────────────────────────────────────────
+function storageKey(suffix) {
+  return 'sycco_' + (currentUser?.email || 'anon') + '_' + suffix;
+}
+function getUsage() {
+  return parseInt(localStorage.getItem(storageKey('usage')) || '0');
+}
+function incrementUsage() {
+  const count = getUsage() + 1;
+  localStorage.setItem(storageKey('usage'), count);
+  generationCount = count;
+  updateUsagePill();
+}
+function saveCampaignLocal(name, inputs, output) {
+  const key = storageKey('campaigns');
+  const campaigns = JSON.parse(localStorage.getItem(key) || '[]');
+  campaigns.unshift({
+    id: Date.now(),
+    name,
+    business_name: inputs.business_name,
+    mode: inputs.creative_mode,
+    platform: inputs.platform,
+    inputs,
+    outputs: output,
+    created_at: new Date().toISOString()
+  });
+  localStorage.setItem(key, JSON.stringify(campaigns.slice(0, 50)));
+}
+function getCampaignsLocal() {
+  return JSON.parse(localStorage.getItem(storageKey('campaigns')) || '[]');
+}
+
+// ─── Init (Netlify Identity) ──────────────────────────────────────────────────
+function init() {
+  netlifyIdentity.on('init', user => {
+    if (user) {
+      currentUser = user;
+      generationCount = getUsage();
+      showApp(user);
+    }
+    // No user → auth screen already visible by default
+  });
+
+  netlifyIdentity.on('login', user => {
+    currentUser = user;
+    netlifyIdentity.close();
+    generationCount = getUsage();
+    showApp(user);
+  });
+
+  netlifyIdentity.on('logout', () => {
+    currentUser = null;
+    generationCount = 0;
+    showAuth();
+  });
+
+  netlifyIdentity.init();
+}
+
+function updateUsagePill() {
+  const pill = document.getElementById('usagePill');
+  if (generationCount >= FREE_LIMIT) {
+    pill.textContent = 'Free limit reached — Upgrade';
+    pill.style.borderColor = '#FF5B5B';
+    pill.style.color = '#FF5B5B';
+  } else {
+    const left = FREE_LIMIT - generationCount;
+    pill.textContent = left + ' free generation' + (left === 1 ? '' : 's') + ' left';
+  }
+  document.getElementById('settingsUsage').textContent = generationCount + ' campaigns generated';
+  document.getElementById('limitNote').textContent = generationCount >= FREE_LIMIT
+    ? '⚠ Free limit reached — upgrade to continue'
+    : (FREE_LIMIT - generationCount) + ' free generations remaining';
+}
+
+function showApp(user) {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appShell').classList.add('visible');
+  const email = user.email || '';
+  document.getElementById('navUser').textContent = email.split('@')[0];
+  document.getElementById('settingsEmail').textContent = email;
+  updateUsagePill();
+}
+
+function showAuth() {
+  document.getElementById('appShell').classList.remove('visible');
+  document.getElementById('authScreen').style.display = 'flex';
+}
+
+// ─── Auth ─────────────────────────────────────────────────────────────────────
+function doLogin()  { netlifyIdentity.open('login');  }
+function doSignup() { netlifyIdentity.open('signup'); }
+function doSignout() { netlifyIdentity.logout(); }
+
+// ─── Panel Nav ────────────────────────────────────────────────────────────────
+function showPanel(name, btn) {
+  ['generate','history','settings'].forEach(p => {
+    document.getElementById('panel'+p.charAt(0).toUpperCase()+p.slice(1)).style.display = p===name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'history') loadHistory();
+}
+
+// ─── Mode selector ────────────────────────────────────────────────────────────
+function selectMode(el, mode) {
+  document.querySelectorAll('.mode-opt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+  selectedMode = mode;
+  document.getElementById('f_mode').value = mode;
+}
+
+// ─── Generate ─────────────────────────────────────────────────────────────────
+async function generate() {
+  const biz      = document.getElementById('f_biz').value.trim();
+  const product  = document.getElementById('f_product').value.trim();
+  const audience = document.getElementById('f_audience').value.trim();
+  const platform = document.getElementById('f_platform').value;
+  const length   = document.getElementById('f_length').value;
+
+  if (!biz || !product || !audience) { showToast('Please fill in Business, Product, and Audience','error'); return; }
+  if (!platform)  { showToast('Please select a platform','error'); return; }
+  if (!length)    { showToast('Please select a video length','error'); return; }
+  if (!selectedMode) { showToast('Please choose a Creative Mode','error'); return; }
+
+  // Check free limit
+  if (generationCount >= FREE_LIMIT) {
+    document.getElementById('upgradeBanner').style.display = 'block';
+    document.getElementById('upgradeBanner').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  const payload = {
+    business_name: biz,
+    product,
+    audience,
+    offer:     document.getElementById('f_offer').value.trim(),
+    cta:       document.getElementById('f_cta').value.trim(),
+    mood:      document.getElementById('f_mood').value.trim(),
+    creative_mode: selectedMode,
+    platform,
+    video_length: length
+  };
+
+  // Show loading
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.add('show');
+  const details = [
+    'Crafting your video prompt...',
+    'Writing voiceover script...',
+    'Building scroll-stopping hooks...',
+    'Generating captions + hashtags...',
+    'Creating ad angles...',
+    'Packaging everything...'
+  ];
+  let di = 0;
+  const detailInterval = setInterval(() => {
+    document.getElementById('loadingDetail').textContent = details[di++ % details.length];
+  }, 1800);
+
+  try {
+    const resp = await fetch('/api/generate-creative', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const result = await resp.json();
+
+    if (!result.success || !result.output) {
+      throw new Error(result.error || 'Generation failed');
+    }
+
+    lastOutput = result.output;
+    renderOutput(result.output, payload);
+
+    // Save to localStorage + increment usage
+    const campaignName = document.getElementById('f_campaign').value.trim()
+      || result.output.campaign_name || biz + ' — ' + selectedMode;
+    saveCampaignLocal(campaignName, payload, result.output);
+    incrementUsage();
+
+    showToast('Creative package generated!', 'success');
+
+  } catch (e) {
+    console.error(e);
+    showToast('Error: ' + e.message, 'error');
+  } finally {
+    clearInterval(detailInterval);
+    overlay.classList.remove('show');
+  }
+}
+
+function renderOutput(o, inputs) {
+  // Header
+  document.getElementById('outputTitle').textContent = (inputs.business_name || 'Your') + ' Creative Package';
+  document.getElementById('outputMeta').textContent = selectedMode + ' · ' + inputs.platform + ' · ' + inputs.video_length;
+
+  // Video prompt
+  setText('out_video', o.video_prompt || '');
+
+  // Scene breakdown
+  const scenes = o.scene_breakdown || [];
+  document.getElementById('out_scenes').innerHTML = scenes.map(s =>
+    `<div class="scene-item">${s}</div>`).join('') || '<div class="scene-item">—</div>';
+
+  // Voiceover
+  setText('out_vo', o.voiceover_script || '');
+
+  // Image prompt
+  setText('out_img', o.image_prompt || '');
+
+  // Hooks
+  const hooks = o.hook_options || [];
+  document.getElementById('out_hooks').innerHTML = hooks.map((h,i) =>
+    `<div class="hook-item">
+      <span class="hook-text">"${h}"</span>
+      <button class="out-copy" onclick="copyText(${JSON.stringify(h)},this)">Copy</button>
+    </div>`).join('');
+
+  // Caption
+  setText('out_caption', o.caption || '');
+
+  // Hashtags
+  const tags = o.hashtags || [];
+  document.getElementById('out_tags').innerHTML = tags.map(t =>
+    `<span class="out-tag" onclick="copyText('${t}',null)">${t}</span>`).join('');
+
+  // CTAs
+  const ctas = o.cta_variations || [];
+  document.getElementById('out_ctas').innerHTML = ctas.map(c =>
+    `<div class="hook-item">
+      <span class="hook-text">${c}</span>
+      <button class="out-copy" onclick="copyText(${JSON.stringify(c)},this)">Copy</button>
+    </div>`).join('');
+
+  // Landing page
+  const landing = [o.landing_headline, o.landing_subheadline].filter(Boolean).join('\n\n');
+  setText('out_landing', landing);
+
+  // Ad angles
+  const angles = o.ad_angles || [];
+  document.getElementById('out_angles').innerHTML = angles.map(a =>
+    `<div class="angle-item">
+      <div class="angle-name">${a.angle || ''}</div>
+      <div class="angle-hook">"${a.hook || ''}"</div>
+      <div class="angle-concept">${a.concept || ''}</div>
+    </div>`).join('');
+
+  // Show output section
+  document.getElementById('outputSection').style.display = 'block';
+  document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function setText(id, text) {
+  document.getElementById(id).textContent = text;
+}
+
+// ─── History ──────────────────────────────────────────────────────────────────
+function loadHistory() {
+  const container = document.getElementById('histList');
+  const data = getCampaignsLocal();
+
+  if (!data.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📁</div><div class="empty-text">No campaigns yet. Generate your first one!</div></div>';
+    return;
+  }
+
+  container.innerHTML = data.map(c => `
+    <div class="hist-card" onclick="loadCampaign(${JSON.stringify(c).replace(/"/g,'&quot;')})">
+      <div>
+        <div class="hist-name">${c.name || c.business_name}</div>
+        <div class="hist-meta">${c.mode} · ${c.platform} · ${new Date(c.created_at).toLocaleDateString()}</div>
+      </div>
+      <div class="hist-badge">${(c.mode||'—').replace(' Mode','')}</div>
+    </div>`).join('');
+}
+
+function loadCampaign(campaign) {
+  if (!campaign.inputs || !campaign.outputs) return;
+  selectedMode = campaign.mode || '';
+  showPanel('generate', null);
+  renderOutput(campaign.outputs, campaign.inputs);
+  showToast('Campaign loaded: ' + (campaign.name || campaign.business_name), 'success');
+}
+
+// ─── Utilities ────────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('outputSection').style.display = 'none';
+  document.getElementById('f_biz').value = '';
+  document.getElementById('f_product').value = '';
+  document.getElementById('f_audience').value = '';
+  document.getElementById('f_offer').value = '';
+  document.getElementById('f_cta').value = '';
+  document.getElementById('f_mood').value = '';
+  document.getElementById('f_campaign').value = '';
+  document.getElementById('f_platform').value = '';
+  document.getElementById('f_length').value = '';
+  document.querySelectorAll('.mode-opt').forEach(o => o.classList.remove('on'));
+  selectedMode = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copyField(id, btnText) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  copyText(el.textContent, event?.target);
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copied to clipboard!', 'success');
+    if (btn) { const orig = btn.textContent; btn.textContent = '✓'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500); }
+  });
+}
+
+function copyTags() {
+  const tags = [...document.querySelectorAll('.out-tag')].map(t => t.textContent).join(' ');
+  copyText(tags, event?.target);
+}
+
+function copyAll() {
+  if (!lastOutput) return;
+  const all = [
+    '── VIDEO PROMPT ──', lastOutput.video_prompt || '',
+    '', '── VOICEOVER ──', lastOutput.voiceover_script || '',
+    '', '── IMAGE PROMPT ──', lastOutput.image_prompt || '',
+    '', '── HOOKS ──', ...(lastOutput.hook_options || []).map((h,i) => `${i+1}. ${h}`),
+    '', '── CAPTION ──', lastOutput.caption || '',
+    '', '── HASHTAGS ──', (lastOutput.hashtags || []).join(' '),
+    '', '── CTA OPTIONS ──', ...(lastOutput.cta_variations || []).map((c,i) => `${i+1}. ${c}`),
+    '', '── LANDING PAGE ──', lastOutput.landing_headline || '', lastOutput.landing_subheadline || ''
+  ].join('\n');
+  copyText(all, null);
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + (type || '');
+  setTimeout(() => t.className = '', 2800);
+}
+
+// ─── Boot ─────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

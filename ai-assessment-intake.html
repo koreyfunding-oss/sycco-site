@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Efficiency Assessment — SYCCO.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;--white:#F2F0EB;--off:#111111;--card:#161616;
+  --accent:#C8A96E;--accent-dim:#A88B52;
+  --muted:rgba(242,240,235,0.42);--faint:rgba(242,240,235,0.06);
+  --border:rgba(200,169,110,0.18);--error:#d96f6f;
+}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);-webkit-font-smoothing:antialiased}
+body::after{content:'';position:fixed;top:-5%;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(200,169,110,0.055) 0%,transparent 65%);pointer-events:none;z-index:0}
+nav{position:relative;z-index:10;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:0.1em;color:var(--accent);text-decoration:none}
+.nav-back{font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s}
+.nav-back:hover{color:var(--white)}
+.progress-track{height:3px;background:var(--faint);position:relative;z-index:10}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));transition:width 0.45s ease;width:14%}
+.progress-meta{display:flex;justify-content:space-between;padding:8px 32px 0;font-size:11px;color:var(--muted);letter-spacing:0.06em;position:relative;z-index:10}
+.page{position:relative;z-index:1;max-width:620px;margin:0 auto;padding:40px 24px 80px}
+.step-hd{margin-bottom:28px}
+.step-eye{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.step-title{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1.02;color:var(--white);margin-bottom:6px}
+.step-sub{font-size:13px;font-weight:300;color:var(--muted);line-height:1.65}
+.card{background:var(--card);border:1px solid var(--border);padding:24px 24px 20px}
+.field{margin-bottom:14px}
+.f-label{display:block;font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.req{color:var(--accent)}
+.f-input,.f-select,.f-textarea{width:100%;background:var(--black);border:1px solid rgba(200,169,110,0.18);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;padding:11px 13px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;border-radius:0}
+.f-input::placeholder,.f-textarea::placeholder{color:rgba(242,240,235,0.18)}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--accent)}
+.f-input.err,.f-select.err,.f-textarea.err{border-color:var(--error)}
+.f-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23C8A96E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+.f-select option{background:#161616;color:var(--white)}
+.f-textarea{resize:vertical;min-height:100px;line-height:1.55}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.err-msg{font-size:11px;color:var(--error);margin-top:4px;display:none}
+.err-msg.show{display:block}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(200,169,110,0.15);cursor:pointer;transition:border-color 0.18s,background 0.18s;user-select:none}
+.check-opt:hover,.check-opt.on{border-color:var(--accent)}
+.check-opt.on{background:rgba(200,169,110,0.08)}
+.check-box{width:15px;height:15px;border:1px solid rgba(200,169,110,0.35);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.check-opt.on .check-box{border-color:var(--accent)}
+.check-box::after{content:'✓';font-size:10px;color:var(--accent);display:none;line-height:1}
+.check-opt.on .check-box::after{display:block}
+.check-label{font-size:13px;font-weight:300;color:var(--white)}
+.radio-list{display:flex;flex-direction:column;gap:7px}
+.radio-opt{display:flex;align-items:center;gap:12px;padding:11px 13px;border:1px solid rgba(200,169,110,0.15);cursor:pointer;transition:border-color 0.18s,background 0.18s;user-select:none}
+.radio-opt:hover,.radio-opt.on{border-color:var(--accent)}
+.radio-opt.on{background:rgba(200,169,110,0.08)}
+.radio-dot{width:15px;height:15px;border:1px solid rgba(200,169,110,0.35);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.radio-opt.on .radio-dot{border-color:var(--accent)}
+.radio-dot::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);display:none}
+.radio-opt.on .radio-dot::after{display:block}
+.radio-label{font-size:13px;font-weight:300;color:var(--white)}
+.btn-row{display:flex;gap:10px;margin-top:18px;align-items:center}
+.btn-next{flex:1;background:var(--accent);color:var(--black);border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:15px;cursor:pointer;transition:background 0.2s,transform 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-next:hover{background:var(--accent-dim);transform:translateY(-1px)}
+.btn-next:disabled{opacity:0.55;cursor:not-allowed;transform:none}
+.btn-back{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;padding:15px 18px;cursor:pointer;transition:border-color 0.2s,color 0.2s}
+.btn-back:hover{border-color:var(--accent);color:var(--white)}
+.step-panel{display:none}.step-panel.active{display:block;animation:rise 0.35s ease both}
+.foot{text-align:center;margin-top:48px;padding-top:24px;border-top:1px solid var(--border)}
+.foot-logo{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:0.1em;color:var(--accent)}
+.foot-addr{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.7}
+.foot-addr a{color:var(--accent);text-decoration:none}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:520px){nav{padding:16px}.page{padding:24px 14px 60px}.card{padding:18px 14px}.f-row{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKDCNE2RP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LEKDCNE2RP');
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">SYCCO.AI</a>
+  <a href="/" class="nav-back">← Back</a>
+</nav>
+<div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+<div class="progress-meta"><span id="pLabel">Step 1 of 7</span><span id="pPct">14%</span></div>
+
+<div class="page">
+
+  <!-- STEP 1 -->
+  <div class="step-panel active" id="s1">
+    <div class="step-hd">
+      <div class="step-eye">Step 1 — Contact Info</div>
+      <div class="step-title">Who Are We Talking To?</div>
+      <div class="step-sub">Basic info so we can personalize your assessment and send you the results.</div>
+    </div>
+    <div class="card">
+      <div class="f-row">
+        <div class="field">
+          <label class="f-label" for="f-name">Full Name <span class="req">*</span></label>
+          <input class="f-input" id="f-name" type="text" placeholder="Your full name" autocomplete="name">
+          <div class="err-msg" id="e-name">Required</div>
+        </div>
+        <div class="field">
+          <label class="f-label" for="f-biz">Business Name <span class="req">*</span></label>
+          <input class="f-input" id="f-biz" type="text" placeholder="Your business name">
+          <div class="err-msg" id="e-biz">Required</div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="f-label" for="f-site">Website</label>
+        <input class="f-input" id="f-site" type="text" placeholder="yoursite.com (optional)">
+      </div>
+      <div class="f-row">
+        <div class="field">
+          <label class="f-label" for="f-email">Email <span class="req">*</span></label>
+          <input class="f-input" id="f-email" type="email" placeholder="you@yourbusiness.com" autocomplete="email">
+          <div class="err-msg" id="e-email">Valid email required</div>
+        </div>
+        <div class="field">
+          <label class="f-label" for="f-phone">Phone <span class="req">*</span></label>
+          <input class="f-input" id="f-phone" type="tel" placeholder="Best number to reach you" autocomplete="tel">
+          <div class="err-msg" id="e-phone">Required</div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn-next" onclick="next(1)">Continue →</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-panel" id="s2">
+    <div class="step-hd">
+      <div class="step-eye">Step 2 — Your Business</div>
+      <div class="step-title">What Type of Business Do You Run?</div>
+      <div class="step-sub">Your industry shapes which AI opportunities apply to you — different business, different leaks.</div>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label class="f-label" for="f-industry">Industry <span class="req">*</span></label>
+        <select class="f-select" id="f-industry">
+          <option value="">Select your industry...</option>
+          <option>Real Estate / Realtor</option>
+          <option>Mortgage Broker</option>
+          <option>Medical / Dental</option>
+          <option>Med Spa / Aesthetics</option>
+          <option>Legal / Law Firm</option>
+          <option>Roofing</option>
+          <option>Solar</option>
+          <option>HVAC / Home Services</option>
+          <option>Automotive</option>
+          <option>Insurance</option>
+          <option>Restaurant / Food</option>
+          <option>E-Commerce</option>
+          <option>Coaching / Consulting</option>
+          <option>Marketing Agency</option>
+          <option>Contractor / Construction</option>
+          <option>Chiropractor / Wellness</option>
+          <option>Other</option>
+        </select>
+        <div class="err-msg" id="e-industry">Please select your industry</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(2)">←</button>
+      <button class="btn-next" onclick="next(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-panel" id="s3">
+    <div class="step-hd">
+      <div class="step-eye">Step 3 — Lead Flow</div>
+      <div class="step-title">Where Are Your Leads Coming From?</div>
+      <div class="step-sub">This tells us where your pipeline starts — and where it's most likely breaking down.</div>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label class="f-label" for="f-leadcount">Roughly how many leads per month? <span class="req">*</span></label>
+        <select class="f-select" id="f-leadcount">
+          <option value="">Select a range...</option>
+          <option>Less than 10</option>
+          <option>10 – 30</option>
+          <option>30 – 75</option>
+          <option>75 – 150</option>
+          <option>150+</option>
+        </select>
+        <div class="err-msg" id="e-leadcount">Please select a range</div>
+      </div>
+      <div class="field" style="margin-top:18px">
+        <label class="f-label">Where do most leads come from? (select all that apply)</label>
+        <div class="check-grid" id="sourceGroup">
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Facebook / Instagram</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Google / SEO</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Referrals</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Yelp / Reviews</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">TikTok</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Website / Forms</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Cold Outreach</span></div>
+          <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Other</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(3)">←</button>
+      <button class="btn-next" onclick="next(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-panel" id="s4">
+    <div class="step-hd">
+      <div class="step-eye">Step 4 — Response Speed</div>
+      <div class="step-title">How Fast Do You Respond to New Leads?</div>
+      <div class="step-sub">This single metric predicts more lost revenue than almost anything else. Be honest — our AI uses this to estimate exactly what it's costing you.</div>
+    </div>
+    <div class="card">
+      <div class="radio-list" id="responseGroup">
+        <div class="radio-opt" onclick="selectRadio(this,'responseGroup')"><div class="radio-dot"></div><span class="radio-label">Under 5 minutes — we're on it immediately</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'responseGroup')"><div class="radio-dot"></div><span class="radio-label">5 – 30 minutes</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'responseGroup')"><div class="radio-dot"></div><span class="radio-label">1 – 3 hours</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'responseGroup')"><div class="radio-dot"></div><span class="radio-label">Same day, usually</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'responseGroup')"><div class="radio-dot"></div><span class="radio-label">Next day or longer</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'responseGroup')"><div class="radio-dot"></div><span class="radio-label">Honestly — we miss leads all the time</span></div>
+      </div>
+      <div class="err-msg" id="e-response" style="margin-top:8px">Please select one</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(4)">←</button>
+      <button class="btn-next" onclick="next(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-panel" id="s5">
+    <div class="step-hd">
+      <div class="step-eye">Step 5 — Current Stack</div>
+      <div class="step-title">What Tools Are You Currently Using?</div>
+      <div class="step-sub">This shows us what's already in place — and what gaps are costing you right now.</div>
+    </div>
+    <div class="card">
+      <div class="check-grid" id="toolsGroup">
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">GoHighLevel</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">HubSpot</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Salesforce</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Google Sheets</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Zapier</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Make.com</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">ChatGPT / Claude</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Calendly / Acuity</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Nothing yet</span></div>
+        <div class="check-opt" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-label">Other</span></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(5)">←</button>
+      <button class="btn-next" onclick="next(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step-panel" id="s6">
+    <div class="step-hd">
+      <div class="step-eye">Step 6 — The Real Problem</div>
+      <div class="step-title">What's the Biggest Bottleneck in Your Business Right Now?</div>
+      <div class="step-sub">Don't filter this. The more honest you are, the more specific your assessment will be. The more detail you give, the more personalized your report.</div>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label class="f-label" for="f-problem">Describe your main bottleneck <span class="req">*</span></label>
+        <textarea class="f-textarea" id="f-problem" style="min-height:120px" placeholder="e.g. We get leads but nobody follows up fast enough. Calls get missed after hours. My team is overwhelmed with manual tasks and nothing is automated. Leads just disappear and we don't know why..."></textarea>
+        <div class="err-msg" id="e-problem">Please give us a bit more detail — the more you share, the better your assessment</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(6)">←</button>
+      <button class="btn-next" onclick="next(6)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step-panel" id="s7">
+    <div class="step-hd">
+      <div class="step-eye">Step 7 — Almost Done</div>
+      <div class="step-title">Are You Currently Using AI or Automation?</div>
+      <div class="step-sub">No judgment. This calibrates whether your assessment starts at baseline setup or advanced optimization.</div>
+    </div>
+    <div class="card">
+      <div class="radio-list" id="aiGroup">
+        <div class="radio-opt" onclick="selectRadio(this,'aiGroup')"><div class="radio-dot"></div><span class="radio-label">Extensively — we use AI and automations regularly</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'aiGroup')"><div class="radio-dot"></div><span class="radio-label">Somewhat — we use a few tools here and there</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'aiGroup')"><div class="radio-dot"></div><span class="radio-label">Barely — we've tried things but nothing sticks</span></div>
+        <div class="radio-opt" onclick="selectRadio(this,'aiGroup')"><div class="radio-dot"></div><span class="radio-label">Not at all — this is completely new territory</span></div>
+      </div>
+      <div class="err-msg" id="e-ai" style="margin-top:8px">Please select one</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(7)">←</button>
+      <button class="btn-next" id="submitBtn" onclick="handleSubmit()">Generate My Assessment →</button>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="foot-logo">SYCCO.AI</div>
+    <div class="foot-addr">
+      Someone You Can Count On<br>
+      8301 W Washington St #9 · Peoria, AZ 85345 ·
+      <a href="https://sycco.xyz" target="_blank">sycco.xyz</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL = 7;
+const PCTS = [14,28,43,57,71,85,100];
+let current = 1;
+
+function setProgress(n){
+  document.getElementById('pFill').style.width=PCTS[n-1]+'%';
+  document.getElementById('pLabel').textContent='Step '+n+' of 7';
+  document.getElementById('pPct').textContent=PCTS[n-1]+'%';
+}
+function showStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setProgress(n); current=n;
+}
+function validateEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+function err(id,msg){
+  const e=document.getElementById('e-'+id);
+  if(e){if(msg)e.textContent=msg;e.classList.add('show')}
+  const f=document.getElementById('f-'+id);if(f)f.classList.add('err');
+}
+function ok(id){
+  const e=document.getElementById('e-'+id);if(e)e.classList.remove('show');
+  const f=document.getElementById('f-'+id);if(f)f.classList.remove('err');
+}
+function next(step){
+  if(step===1){
+    let v=true;
+    if(!document.getElementById('f-name').value.trim()){err('name');v=false;}else ok('name');
+    if(!document.getElementById('f-biz').value.trim()){err('biz');v=false;}else ok('biz');
+    if(!validateEmail(document.getElementById('f-email').value.trim())){err('email');v=false;}else ok('email');
+    if(!document.getElementById('f-phone').value.trim()){err('phone');v=false;}else ok('phone');
+    if(!v)return;
+  }
+  if(step===2){if(!document.getElementById('f-industry').value){err('industry');return;}ok('industry');}
+  if(step===3){if(!document.getElementById('f-leadcount').value){err('leadcount');return;}ok('leadcount');}
+  if(step===4){
+    if(!document.querySelector('#responseGroup .radio-opt.on')){document.getElementById('e-response').classList.add('show');return;}
+    document.getElementById('e-response').classList.remove('show');
+  }
+  if(step===6){
+    const v=document.getElementById('f-problem').value.trim();
+    if(v.length<15){err('problem','Please describe your bottleneck in a bit more detail');return;}ok('problem');
+  }
+  if(step<TOTAL)showStep(step+1);
+}
+function back(step){if(step>1)showStep(step-1);}
+function toggleCheck(el){el.classList.toggle('on');}
+function selectRadio(el,gid){
+  document.querySelectorAll('#'+gid+' .radio-opt').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on');
+}
+function getChecked(gid){
+  return[...document.querySelectorAll('#'+gid+' .check-opt.on')].map(el=>el.querySelector('.check-label').textContent.trim());
+}
+function getRadio(gid){
+  const el=document.querySelector('#'+gid+' .radio-opt.on');
+  return el?el.querySelector('.radio-label').textContent.trim():'';
+}
+
+async function handleSubmit(){
+  if(!getRadio('aiGroup')){document.getElementById('e-ai').classList.add('show');return;}
+  document.getElementById('e-ai').classList.remove('show');
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="animation:spin 1s linear infinite;flex-shrink:0"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4" stroke-dashoffset="10"/></svg> Analyzing your business...';
+
+  const payload={
+    name:document.getElementById('f-name').value.trim(),
+    business_name:document.getElementById('f-biz').value.trim(),
+    website:document.getElementById('f-site').value.trim(),
+    email:document.getElementById('f-email').value.trim(),
+    phone:document.getElementById('f-phone').value.trim(),
+    industry:document.getElementById('f-industry').value,
+    monthly_leads:document.getElementById('f-leadcount').value,
+    lead_sources:getChecked('sourceGroup'),
+    response_time:getRadio('responseGroup'),
+    current_tools:getChecked('toolsGroup'),
+    main_problem:document.getElementById('f-problem').value.trim(),
+    ai_usage:getRadio('aiGroup'),
+    source:'SYCCO.AI Assessment',
+    submitted_at:new Date().toISOString()
+  };
+
+  try{
+    const resp = await fetch('/api/submit-assessment',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    const result = await resp.json();
+    if(result.summary || result.creative){
+      // Store both report summary AND creative sample together
+      sessionStorage.setItem('sycco_report', JSON.stringify({
+        summary:  result.summary  || null,
+        creative: result.creative || null,
+        // flatten summary fields for backward compat
+        ...(result.summary || {})
+      }));
+    }
+  } catch(e){
+    console.error('Submit error:',e);
+    sessionStorage.setItem('sycco_report', JSON.stringify({name:payload.name,business:payload.business_name}));
+  }
+
+  window.location.href='assessment-received.html';
+}
+</script>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+</body>
+</html>

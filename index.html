@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Efficiency Diagnostics — SYCCO.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0A0A0A;--white:#F5F4F0;--off:#0D0D0D;--mid:#0D0D0D;
+  --accent:#C8A96E;--accent-dim:#A88B52;
+  --muted:#D4D4D4;--muted-light:#FFFFFF;
+  --border:rgba(200,169,110,0.18);
+}
+html{scroll-behavior:smooth;background:#0A0A0A}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#0A0A0A;color:#FFFFFF;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,0.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:20px;letter-spacing:0.08em;color:var(--accent);text-decoration:none}
+.nav-cta{background:var(--accent);color:var(--black);border:none;padding:10px 22px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.05em;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.2s}
+.nav-cta:hover{background:var(--accent-dim)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:110px 40px 70px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 50%,rgba(200,169,110,0.07) 0%,transparent 60%);pointer-events:none}
+.hero-eye{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0;animation:up 0.6s ease 0.1s forwards}
+.hero h1{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:72px;line-height:0.95;max-width:820px;margin-bottom:12px;opacity:0;animation:up 0.7s ease 0.2s forwards}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-anchor{font-family:'DM Serif Display',Georgia,serif;font-size:22px;font-style:italic;font-weight:400;color:var(--accent);margin-bottom:24px;opacity:0;animation:up 0.6s ease 0.35s forwards}
+.hero-sub{font-size:17px;font-weight:300;color:#FFFFFF;max-width:540px;line-height:1.75;margin-bottom:40px;opacity:0;animation:up 0.6s ease 0.45s forwards}
+.hero-ctas{display:flex;align-items:center;gap:20px;flex-wrap:wrap;opacity:0;animation:up 0.6s ease 0.55s forwards}
+.btn-primary{background:var(--accent);color:var(--black);padding:16px 36px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.2s,transform 0.15s}
+.btn-primary:hover{background:var(--accent-dim);transform:translateY(-1px)}
+.btn-ghost{color:#D4D4D4;font-size:14px;font-weight:400;text-decoration:none;border-bottom:1px solid rgba(245,244,240,0.25);padding-bottom:2px;transition:color 0.2s,border-color 0.2s;letter-spacing:0.02em}
+.btn-ghost:hover{color:#FFFFFF;border-color:#FFFFFF}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap;margin-top:64px;padding-top:36px;border-top:1px solid var(--border);opacity:0;animation:up 0.6s ease 0.7s forwards}
+.stat-num{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:38px;line-height:1;color:var(--accent);display:block}
+.stat-label{font-size:14px;font-weight:300;color:#D4D4D4;line-height:1.5;display:block;max-width:160px}
+
+/* SECTIONS */
+section{padding:80px 40px}
+.container{max-width:1080px;margin:0 auto}
+.sec-eye{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.sec-h{font-family:'DM Serif Display',Georgia,serif;font-size:42px;line-height:1.12;font-weight:400;margin-bottom:16px}
+.sec-h em{font-style:italic;color:var(--accent)}
+.sec-sub{font-size:16px;font-weight:300;color:#FFFFFF;max-width:500px;line-height:1.75}
+
+/* PAIN */
+.pain{background:var(--off)}
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start;margin-top:52px}
+.pain-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.pain-list li{display:flex;align-items:flex-start;gap:14px;font-size:16px;font-weight:300;color:#FFFFFF;line-height:1.55}
+.pain-list li::before{content:'—';color:var(--accent);flex-shrink:0;margin-top:1px}
+.pain-quote{background:var(--black);border-left:3px solid var(--accent);padding:28px 28px}
+.pain-quote p{font-family:'DM Serif Display',Georgia,serif;font-size:22px;font-style:italic;line-height:1.5;color:#FFFFFF;font-weight:400}
+.pain-quote cite{display:block;margin-top:16px;font-size:12px;font-style:normal;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#D4D4D4}
+
+/* ANCHOR SECTION */
+.anchor-sec{background:var(--accent);padding:60px 40px}
+.anchor-sec .container{display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.anchor-big{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:52px;line-height:1;color:#0A0A0A;max-width:580px}
+.anchor-right{display:flex;flex-direction:column;gap:12px;max-width:360px}
+.anchor-point{display:flex;align-items:flex-start;gap:12px;font-size:16px;font-weight:700;color:#0A0A0A;line-height:1.5}
+.anchor-dot{width:6px;height:6px;background:#0A0A0A;border-radius:50%;flex-shrink:0;margin-top:8px}
+
+/* FINDINGS */
+.findings{background:var(--black)}
+.findings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.finding-card{background:var(--black);padding:28px 24px}
+.finding-icon{font-size:22px;margin-bottom:14px}
+.finding-title{font-size:15px;font-weight:500;color:#FFFFFF;margin-bottom:8px}
+.finding-desc{font-size:14px;font-weight:300;color:#D4D4D4;line-height:1.65}
+
+/* HOW IT WORKS */
+.how{background:var(--off)}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.how-step{background:var(--off);padding:28px 22px}
+.how-num{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:52px;line-height:1;color:rgba(200,169,110,0.15);margin-bottom:14px}
+.how-title{font-size:15px;font-weight:500;color:#FFFFFF;margin-bottom:8px}
+.how-desc{font-size:14px;font-weight:300;color:#D4D4D4;line-height:1.65}
+.how-time{display:inline-block;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-top:10px}
+
+/* PATHS — DIY vs DIFM */
+.paths{background:var(--black)}
+.paths-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+.path-card{background:var(--black);padding:36px 32px}
+.path-card.featured{background:var(--off);border-left:3px solid var(--accent)}
+.path-label{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.path-title{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:32px;line-height:1;color:#FFFFFF;margin-bottom:12px}
+.path-price{font-size:28px;font-weight:300;color:var(--accent);margin-bottom:16px}
+.path-price span{font-size:14px;color:#D4D4D4}
+.path-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.path-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;font-weight:300;color:#FFFFFF;line-height:1.5}
+.path-list li::before{content:'✓';color:var(--accent);font-size:13px;flex-shrink:0;margin-top:1px}
+.path-note{font-size:13px;font-weight:300;color:#D4D4D4;margin-top:12px;font-style:italic}
+
+/* WHO */
+.who{background:var(--off)}
+.who-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:40px}
+.who-item{background:var(--off);padding:18px 20px;font-size:14px;font-weight:400;color:#FFFFFF;transition:background 0.2s,color 0.2s}
+.who-item:hover{background:var(--black);color:var(--accent)}
+
+/* INCLUDED */
+.included{background:var(--black)}
+.included-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:40px}
+.inc-item{background:var(--black);padding:22px 20px;display:flex;align-items:flex-start;gap:12px}
+.inc-check{width:18px;height:18px;border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.inc-check::after{content:'✓';font-size:10px;color:var(--accent);line-height:1}
+.inc-item span{font-size:14px;font-weight:400;color:#FFFFFF;line-height:1.5}
+
+/* FINAL CTA */
+.final{background:var(--off);text-align:center;padding:100px 40px}
+.final .sec-h{max-width:640px;margin:0 auto 14px}
+.final .sec-sub{margin:0 auto 40px;text-align:center}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid var(--border);padding:32px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-brand{}
+.footer-logo{font-family:'Bebas Neue',Impact,'Arial Narrow',sans-serif;font-size:18px;letter-spacing:0.08em;color:var(--accent);text-decoration:none}
+.footer-tag{font-size:12px;color:#D4D4D4;margin-top:4px;letter-spacing:0.04em}
+.footer-addr{font-size:11px;color:#D4D4D4;margin-top:6px;line-height:1.7}
+.footer-addr a{color:var(--accent);text-decoration:none}
+.footer-disc{font-size:11px;color:#D4D4D4;max-width:460px;line-height:1.65}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .hero{padding:90px 20px 60px}
+  .hero h1{font-size:48px}
+  .hero-anchor{font-size:18px}
+  section{padding:60px 20px}
+  .sec-h{font-size:32px}
+  .pain-grid{grid-template-columns:1fr;gap:32px}
+  .how-steps{grid-template-columns:1fr 1fr}
+  .paths-grid{grid-template-columns:1fr}
+  .findings-grid{grid-template-columns:1fr}
+  .anchor-big{font-size:38px}
+  footer{flex-direction:column}
+}
+@media(max-width:480px){
+  .hero h1{font-size:38px}
+  .how-steps{grid-template-columns:1fr}
+  .hero-ctas{flex-direction:column;align-items:flex-start}
+}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKDCNE2RP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LEKDCNE2RP');
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">SYCCO.AI</a>
+  <a href="ai-assessment-intake.html" class="nav-cta">Get My Free Assessment</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eye">Business Efficiency Diagnostics</div>
+    <h1>Most Businesses Don't Have<br>a Lead Problem.<br><em>They Have a Follow-Up Problem.</em></h1>
+    <div class="hero-anchor">You don't need more leads. You need better systems.</div>
+    <p class="hero-sub">We diagnose exactly where your business is leaking revenue — slow response, missed calls, no automation, broken follow-up — and give you a clear plan to fix it. No fluff. No 45-minute strategy calls unless you want one.</p>
+    <div class="hero-ctas">
+      <a href="ai-assessment-intake.html" class="btn-primary">Get My Free Assessment</a>
+      <a href="#how" class="btn-ghost">See how it works →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">78%</span>
+        <span class="stat-label">of buyers choose the first company to respond</span>
+      </div>
+      <div>
+        <span class="stat-num">Most</span>
+        <span class="stat-label">businesses respond too late to even know they lost the lead</span>
+      </div>
+      <div>
+        <span class="stat-num">Free</span>
+        <span class="stat-label">assessment — no sales call required to get your report</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="container">
+    <div class="sec-eye">The Real Problem</div>
+    <h2 class="sec-h">Your Business Is Probably<br>Leaking Revenue <em>Every Single Day</em></h2>
+    <div class="pain-grid">
+      <ul class="pain-list">
+        <li>Leads come in — and nobody follows up fast enough</li>
+        <li>Calls get missed after 5PM and on weekends</li>
+        <li>Web inquiries sit in an inbox until they go cold</li>
+        <li>No automated SMS response when a lead fills out a form</li>
+        <li>Staff is overwhelmed with manual copy-paste tasks</li>
+        <li>No reactivation campaigns for old leads who went quiet</li>
+        <li>Competitors respond faster — and win the deal before you call back</li>
+        <li>Your CRM exists but nobody actually uses it consistently</li>
+      </ul>
+      <div class="pain-quote">
+        <p>"The problem isn't that you don't have enough leads. The problem is that the leads you already have aren't being handled properly."</p>
+        <cite>What we find in almost every assessment</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANCHOR -->
+<div class="anchor-sec">
+  <div class="container">
+    <div class="anchor-big">You Don't Need More Leads. You Need Better Systems.</div>
+    <div class="anchor-right">
+      <div class="anchor-point"><div class="anchor-dot"></div><span>Faster response to every inquiry — automated</span></div>
+      <div class="anchor-point"><div class="anchor-dot"></div><span>Consistent follow-up that doesn't rely on memory</span></div>
+      <div class="anchor-point"><div class="anchor-dot"></div><span>Workflows that run while you sleep</span></div>
+      <div class="anchor-point"><div class="anchor-dot"></div><span>More appointments from leads you already have</span></div>
+      <div class="anchor-point"><div class="anchor-dot"></div><span>Higher conversions without more ad spend</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXAMPLE FINDINGS -->
+<section class="findings">
+  <div class="container">
+    <div class="sec-eye">Example Findings</div>
+    <h2 class="sec-h">What We Typically Uncover</h2>
+    <p class="sec-sub">Real patterns we find in real businesses. You'll likely recognize more than one of these.</p>
+    <div class="findings-grid">
+      <div class="finding-card">
+        <div class="finding-icon">📞</div>
+        <div class="finding-title">Missed Calls After 5PM</div>
+        <div class="finding-desc">Most inbound leads call during evenings and weekends. No one answers. No callback system exists. Lead goes to the next company on Google.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">💬</div>
+        <div class="finding-title">No SMS Follow-Up</div>
+        <div class="finding-desc">Lead fills out a web form. Gets an email auto-reply — maybe. Never gets a text. 78% of leads prefer SMS. Most businesses don't send one.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">⏱️</div>
+        <div class="finding-title">Slow Web Form Response</div>
+        <div class="finding-desc">Forms submitted at 9PM get a response the next morning. By then the lead has already spoken to two competitors and made a decision.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">💀</div>
+        <div class="finding-title">Dead Leads Never Reactivated</div>
+        <div class="finding-desc">Hundreds of past leads sitting in a spreadsheet or CRM — never followed up after the first attempt. A reactivation sequence could close 10–20% of them.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">📅</div>
+        <div class="finding-title">No Automated Booking Reminders</div>
+        <div class="finding-desc">Appointments booked — but no reminder sequence. No-show rates above 30%. Simple automation cuts that in half.</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">🔁</div>
+        <div class="finding-title">Manual Tasks Running on Human Memory</div>
+        <div class="finding-desc">Staff spending 2–4 hours daily on tasks a $49/month tool could handle automatically. That's real salary being spent on robot work.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="sec-eye">The Process</div>
+    <h2 class="sec-h">Simple. Fast. No Fluff.</h2>
+    <p class="sec-sub">No 45-minute discovery calls. No sales pressure. Just a diagnostic that tells you exactly what's broken and what to do about it.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <div class="how-title">Complete the Assessment</div>
+        <div class="how-desc">Answer 7 quick questions about your business, your leads, and how you currently respond. Takes under 2 minutes.</div>
+        <span class="how-time">~2 min</span>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <div class="how-title">AI Analyzes Your Business</div>
+        <div class="how-desc">Our system identifies your specific bottlenecks, estimates revenue leakage, and builds your personalized findings report.</div>
+        <span class="how-time">Automated</span>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <div class="how-title">You Get Your Report</div>
+        <div class="how-desc">A clear breakdown of what's leaking, what to fix first, and which tools solve each problem — within 24 hours.</div>
+        <span class="how-time">Within 24hrs</span>
+      </div>
+      <div class="how-step">
+        <div class="how-num">04</div>
+        <div class="how-title">You Choose the Path</div>
+        <div class="how-desc">Fix it yourself with our step-by-step blueprint. Or let us build and implement everything for you. No pressure either way.</div>
+        <span class="how-time">Your call</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATHS: DIY vs DIFM -->
+<section class="paths">
+  <div class="container">
+    <div class="sec-eye">Two Paths Forward</div>
+    <h2 class="sec-h">You're In Control. Always.</h2>
+    <p class="sec-sub">No forced sales calls. No pressure to hire us. You get the report either way — then decide what to do with it.</p>
+    <div class="paths-grid">
+      <div class="path-card">
+        <div class="path-label">Path 1 — DIY</div>
+        <div class="path-title">The Blueprint</div>
+        <div class="path-price">$497 <span>one-time</span></div>
+        <ul class="path-list">
+          <li>Full AI Efficiency Assessment Report</li>
+          <li>Step-by-step implementation guide</li>
+          <li>Exact tools to use (with setup instructions)</li>
+          <li>Automation workflow templates</li>
+          <li>CRM configuration checklist</li>
+          <li>AI prompt library for your industry</li>
+        </ul>
+        <a href="ai-assessment-intake.html" class="btn-primary" style="width:100%;text-align:center;display:block">Start My Assessment →</a>
+        <p class="path-note">Everything you need to implement this yourself — no technical background required.</p>
+      </div>
+      <div class="path-card featured">
+        <div class="path-label">Path 2 — Done For You</div>
+        <div class="path-title">We Build It</div>
+        <div class="path-price">From $2,000 <span>per project</span></div>
+        <ul class="path-list">
+          <li>Everything in The Blueprint</li>
+          <li>Full CRM setup and configuration</li>
+          <li>Automation workflows built and tested</li>
+          <li>AI lead response system deployed</li>
+          <li>Follow-up sequences written and activated</li>
+          <li>Optional monthly management retainer</li>
+        </ul>
+        <a href="ai-assessment-intake.html" class="btn-primary" style="width:100%;text-align:center;display:block;background:var(--accent)">Get My Free Assessment →</a>
+        <p class="path-note">You don't need to speak to anyone unless you want to. We deliver everything async.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section class="who">
+  <div class="container">
+    <div class="sec-eye">Who This Is For</div>
+    <h2 class="sec-h">If Your Business Runs on Leads,<br>Calls, or Appointments — <em>This Is For You</em></h2>
+    <div class="who-grid">
+      <div class="who-item">Realtors</div>
+      <div class="who-item">Mortgage Brokers</div>
+      <div class="who-item">Roofers</div>
+      <div class="who-item">HVAC Companies</div>
+      <div class="who-item">Dentists</div>
+      <div class="who-item">Chiropractors</div>
+      <div class="who-item">Med Spas</div>
+      <div class="who-item">Solar Companies</div>
+      <div class="who-item">Law Firms</div>
+      <div class="who-item">Home Service Businesses</div>
+      <div class="who-item">Auto Detailers</div>
+      <div class="who-item">Insurance Offices</div>
+      <div class="who-item">Marketing Agencies</div>
+      <div class="who-item">Contractors</div>
+      <div class="who-item">Coaches / Consultants</div>
+      <div class="who-item">Local Service Businesses</div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="included">
+  <div class="container">
+    <div class="sec-eye">What's Included</div>
+    <h2 class="sec-h">Everything In Your Free Assessment</h2>
+    <p class="sec-sub">No commitment. No credit card. Just a clear picture of what's broken and what it's costing you.</p>
+    <div class="included-grid">
+      <div class="inc-item"><div class="inc-check"></div><span>Lead Response Speed Analysis</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>Missed Call & Inquiry Review</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>Follow-Up Workflow Diagnosis</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>Automation Opportunity Map</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>Revenue Leakage Estimate</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>Tool Recommendations for Your Industry</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>AI Readiness Score</span></div>
+      <div class="inc-item"><div class="inc-check"></div><span>Custom Action Plan — prioritized by impact</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="container">
+    <div class="sec-eye">Get Started</div>
+    <h2 class="sec-h">Find Out Exactly Where Your<br>Business Is Leaking Revenue</h2>
+    <p class="sec-sub">Takes under 2 minutes. No sales call required. You choose what to do with the results.</p>
+    <a href="ai-assessment-intake.html" class="btn-primary" style="font-size:15px;padding:18px 48px">Get My Free Assessment →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="https://sycco.xyz" target="_blank" class="footer-logo">SYCCO.AI</a>
+    <div class="footer-tag">Someone You Can Count On</div>
+    <div class="footer-addr">
+      8301 W Washington St #9 · Peoria, AZ 85345<br>
+      <a href="https://sycco.xyz" target="_blank">sycco.xyz</a>
+    </div>
+  </div>
+  <p class="footer-disc">Results vary depending on business type, systems, lead flow, and implementation. This assessment provides operational insights and recommendations and does not guarantee specific financial outcomes.</p>
+</footer>
+
+</body>
+</html>

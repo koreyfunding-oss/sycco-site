@@ -1,0 +1,21 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/submit-assessment"
+  to = "/.netlify/functions/submit-assessment"
+  status = 200
+
+[[redirects]]
+  from = "/api/generate-creative"
+  to = "/.netlify/functions/generate-creative"
+  status = 200
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type"
