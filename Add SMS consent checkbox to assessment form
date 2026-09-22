@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T3H1725GD2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-T3H1725GD2');
+</script>
+<title>SYCCO — Build Your 12-Month Wealth Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1712;          /* near-black emerald */
+  --emerald:#0E2019;
+  --emerald-2:#14342A;
+  --emerald-3:#1B3D31;
+  --charcoal:#141614;
+  --line:#2B4A3D;
+  --ivory:#F6F1E4;
+  --ivory-dim:#D9D3C4;
+  --parchment:#EFE7D3;
+  --gold:#C6A15C;
+  --gold-soft:#E7CE9A;
+  --gold-bright:#EAD39C;
+  --muted:#9DB0A6;
+  --muted-dark:#5A6B62;
+  --wrap:1200px;
+  --pad:clamp(1.2rem,4vw,2.5rem);
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--emerald);
+  color:var(--ivory);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,.display{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.06;letter-spacing:-0.01em;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);}
+.eyebrow{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:.72rem;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--gold);
+}
+.gold-text{color:var(--gold);}
+.serif-accent{font-style:italic;font-weight:400;}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:.98rem;
+  letter-spacing:.02em;border:none;border-radius:100px;
+  padding:1.05rem 2.3rem;transition:transform .25s ease,box-shadow .25s ease,background .25s ease;
+  position:relative;
+}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold-soft),var(--gold));
+  color:#20180A;
+  box-shadow:0 10px 40px rgba(198,161,92,0.28);
+}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 16px 55px rgba(198,161,92,0.42);}
+.btn-gold .arrow{transition:transform .25s ease;}
+.btn-gold:hover .arrow{transform:translateX(5px);}
+.btn-ghost{
+  background:transparent;color:var(--ivory);
+  border:1px solid var(--line);
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-soft);}
+.micro{color:var(--muted);font-size:.82rem;margin-top:1rem;line-height:1.7;}
+.micro strong{color:var(--ivory-dim);font-weight:500;}
+
+/* ---------- REVEAL ANIMATIONS ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.16,.8,.3,1),transform 1s cubic-bezier(.16,.8,.3,1);}
+.reveal.in{opacity:1;transform:none;}
+.reveal.d1{transition-delay:.1s;}
+.reveal.d2{transition-delay:.2s;}
+.reveal.d3{transition-delay:.3s;}
+.reveal.d4{transition-delay:.4s;}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s ease,backdrop-filter .4s ease,border-color .4s;border-bottom:1px solid transparent;}
+.nav.scrolled{background:rgba(11,23,18,0.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px;}
+.wordmark{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;letter-spacing:.04em;}
+.wordmark span{color:var(--gold);}
+.nav-tag{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
+.nav-cta{font-size:.8rem;padding:.7rem 1.5rem;}
+@media(max-width:600px){.nav-cta{padding:.6rem 1.1rem;font-size:.72rem;}.wordmark{font-size:1.25rem;}}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 70px;overflow:hidden;
+  background:radial-gradient(120% 90% at 80% 10%,var(--emerald-2) 0%,var(--emerald) 45%,var(--ink) 100%);}
+.hero-glow{position:absolute;top:-15%;right:-10%;width:60vw;height:60vw;max-width:760px;max-height:760px;
+  background:radial-gradient(circle,rgba(198,161,92,0.16),transparent 62%);filter:blur(20px);pointer-events:none;}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:center;position:relative;z-index:2;}
+.hero-eyebrow{margin-bottom:1.6rem;}
+.hero h1{font-size:clamp(2.6rem,6.2vw,5rem);font-weight:600;margin-bottom:1.5rem;}
+.hero h1 .amount{display:block;color:var(--gold);font-weight:700;background:linear-gradient(120deg,var(--gold-soft),var(--gold),var(--gold-bright));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:clamp(1.05rem,1.9vw,1.32rem);color:var(--ivory-dim);font-weight:400;max-width:42ch;margin-bottom:1.8rem;font-family:'Fraunces',serif;font-style:italic;line-height:1.4;}
+.hero-body{color:var(--muted);font-size:.98rem;max-width:44ch;margin-bottom:.6rem;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 2rem;max-width:46ch;}
+.hero-chips span{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ivory-dim);
+  border:1px solid var(--line);border-radius:100px;padding:.35rem .85rem;background:rgba(27,61,49,0.35);}
+.hero-question{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--ivory);margin:0 0 1.8rem;font-weight:500;}
+.hero-question .gold-text{font-style:italic;}
+
+/* ---------- ROADMAP ANIMATION (the "video") ---------- */
+.roadmap-stage{position:relative;width:100%;aspect-ratio:1/1.02;max-width:520px;margin:0 auto;
+  background:linear-gradient(160deg,rgba(20,52,42,0.6),rgba(11,23,18,0.9));
+  border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,0.5),inset 0 1px 0 rgba(231,206,154,0.08);}
+.roadmap-stage::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 40%,rgba(198,161,92,0.10),transparent 60%);pointer-events:none;}
+.roadmap-head{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);z-index:5;
+  border-bottom:1px solid rgba(43,74,61,0.6);background:rgba(11,23,18,0.4);}
+.roadmap-head .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);display:inline-block;margin-right:7px;animation:livepulse 2s infinite;}
+@keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.roadmap-svg{position:absolute;inset:0;width:100%;height:100%;}
+.rm-node{opacity:0;}
+.rm-node.lit{opacity:1;transition:opacity .5s ease;}
+.rm-ring{fill:none;stroke:var(--line);stroke-width:1.2;}
+.rm-core{fill:var(--emerald-3);stroke:var(--gold);stroke-width:0;transition:stroke-width .4s ease,fill .4s ease;}
+.rm-node.lit .rm-core{stroke-width:1.6;fill:rgba(198,161,92,0.14);}
+.rm-label{font-family:'Inter',sans-serif;font-size:9px;font-weight:600;letter-spacing:.12em;fill:var(--ivory-dim);text-transform:uppercase;text-anchor:middle;}
+.rm-node.lit .rm-label{fill:var(--gold-soft);}
+.rm-line{fill:none;stroke:url(#goldgrad);stroke-width:1.6;stroke-linecap:round;
+  stroke-dasharray:1200;stroke-dashoffset:1200;filter:drop-shadow(0 0 3px rgba(198,161,92,0.4));}
+.rm-center-label{font-family:'Fraunces',serif;font-size:15px;fill:var(--ivory);text-anchor:middle;font-weight:600;}
+.rm-center-sub{font-family:'Inter',sans-serif;font-size:8px;letter-spacing:.18em;fill:var(--gold);text-anchor:middle;text-transform:uppercase;}
+.roadmap-foot{position:absolute;bottom:0;left:0;right:0;padding:12px 18px;z-index:5;
+  border-top:1px solid rgba(43,74,61,0.6);background:rgba(11,23,18,0.4);display:flex;align-items:center;gap:10px;}
+.roadmap-foot .bar{flex:1;height:4px;border-radius:4px;background:rgba(43,74,61,0.7);overflow:hidden;}
+.roadmap-foot .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));border-radius:4px;transition:width .3s linear;}
+.roadmap-foot .pct{font-size:.62rem;letter-spacing:.14em;color:var(--gold-soft);font-weight:600;min-width:78px;text-align:right;}
+
+/* ---------- SECTION SHELL ---------- */
+section{position:relative;}
+.pad{padding:clamp(4.5rem,10vw,8rem) 0;}
+.section-eyebrow{margin-bottom:1.4rem;}
+.h-lg{font-size:clamp(2rem,4.6vw,3.5rem);font-weight:600;}
+.h-md{font-size:clamp(1.7rem,3.4vw,2.6rem);}
+.lede{color:var(--ivory-dim);font-size:clamp(1.02rem,1.5vw,1.18rem);max-width:60ch;}
+.txt-narrow{max-width:56ch;}
+.center{text-align:center;margin-left:auto;margin-right:auto;}
+
+/* ---------- PROBLEM (sec2) ---------- */
+.problem{background:linear-gradient(180deg,var(--ink),var(--emerald));}
+.stmt-list{margin:2rem 0;display:grid;gap:.5rem;}
+.stmt-list p{color:var(--muted);font-size:1.05rem;}
+.scatter{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:2.4rem 0;}
+.scatter span{border:1px solid var(--line);border-radius:10px;padding:.9rem 1rem;font-size:.82rem;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:rgba(27,61,49,0.25);text-align:center;}
+@media(max-width:600px){.scatter{grid-template-columns:repeat(2,1fr);}}
+.big-statement{text-align:center;padding:clamp(3rem,7vw,5.5rem) 0;}
+.big-statement .h-lg{max-width:20ch;margin:0 auto;}
+.big-statement .accent{color:var(--gold);display:block;margin-top:.4rem;font-style:italic;font-weight:400;}
+
+/* ---------- OPPORTUNITY DASHBOARD (sec3) ---------- */
+.dash{background:var(--ink);}
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:3rem;}
+@media(max-width:820px){.dash-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.dash-grid{grid-template-columns:1fr;}}
+.dash-card{position:relative;border:1px solid var(--line);border-radius:12px;padding:1.3rem 1.3rem;
+  background:linear-gradient(160deg,rgba(27,61,49,0.4),rgba(11,23,18,0.5));
+  display:flex;align-items:center;gap:.9rem;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;overflow:hidden;}
+.dash-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 18px 40px rgba(0,0,0,0.35);}
+.dash-card .ic{width:30px;height:30px;flex-shrink:0;color:var(--gold);}
+.dash-card .ic svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.6;}
+.dash-card h4{font-family:'Inter',sans-serif;font-weight:600;font-size:.86rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ivory);}
+
+/* ---------- STEPS (sec4) ---------- */
+.steps{background:linear-gradient(180deg,var(--emerald),var(--ink));}
+.steps-wrap{margin-top:3rem;position:relative;}
+.step{display:grid;grid-template-columns:auto 1fr;gap:1.8rem;padding:1.8rem 0;border-top:1px solid var(--line);align-items:start;}
+.step:last-child{border-bottom:1px solid var(--line);}
+.step-num{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3rem);color:var(--gold);font-weight:300;line-height:1;min-width:80px;}
+.step-body h3{font-size:1.3rem;margin-bottom:.5rem;color:var(--ivory);}
+.step-body p{color:var(--muted);max-width:60ch;}
+
+/* ---------- BIG IDEA (sec5) ---------- */
+.bigidea{background:radial-gradient(120% 100% at 50% 0%,var(--emerald-2),var(--ink) 70%);text-align:center;}
+.bigidea .h-lg{max-width:16ch;margin:0 auto 2.5rem;}
+.reveal-lines{max-width:36ch;margin:0 auto;display:grid;gap:.9rem;}
+.reveal-lines p{color:var(--ivory-dim);font-size:1.08rem;padding-left:1.6rem;position:relative;text-align:left;}
+.reveal-lines p::before{content:"";position:absolute;left:0;top:.65em;width:9px;height:9px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 10px rgba(198,161,92,0.6);}
+.bigidea-close{margin-top:3.2rem;}
+.bigidea-close .h-md{max-width:22ch;margin:0 auto;}
+.bigidea-close .accent{color:var(--gold);font-style:italic;font-weight:400;}
+
+/* ---------- VALUE / 12MO (sec6) ---------- */
+.value{background:var(--emerald);}
+.value-nums{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(1rem,4vw,3rem);margin:2.6rem 0 1rem;}
+.value-nums .n{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(2rem,5vw,3.6rem);
+  background:linear-gradient(120deg,var(--gold-soft),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.two-col-list{columns:2;column-gap:2.5rem;max-width:800px;margin:2rem auto 0;}
+@media(max-width:600px){.two-col-list{columns:1;}}
+.two-col-list li{list-style:none;color:var(--muted);padding:.5rem 0 .5rem 1.5rem;position:relative;break-inside:avoid;font-size:.96rem;}
+.two-col-list li::before{content:"—";position:absolute;left:0;color:var(--gold);}
+.disclosure{color:var(--muted-dark);font-size:.75rem;max-width:70ch;margin:2.5rem auto 0;text-align:center;line-height:1.6;}
+
+/* ---------- DIFFERENCE (sec7) ---------- */
+.diff{background:linear-gradient(180deg,var(--ink),var(--emerald));text-align:center;}
+.diff .h-lg{max-width:18ch;margin:0 auto 1.6rem;}
+.diff .h-lg .g{color:var(--gold);font-style:italic;font-weight:400;}
+.idea-cloud{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;max-width:640px;margin:2.2rem auto;}
+.idea-cloud span{color:var(--muted);font-size:.9rem;border:1px solid var(--line);border-radius:100px;padding:.45rem 1.1rem;background:rgba(27,61,49,0.2);}
+.diff-close{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2.3rem);max-width:20ch;margin:2.5rem auto 0;color:var(--ivory);}
+.diff-close .g{color:var(--gold);}
+
+/* ---------- FEATURES (sec8) ---------- */
+.feat{background:var(--ink);}
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem;}
+@media(max-width:900px){.feat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.feat-grid{grid-template-columns:1fr;}}
+.feat-card{border:1px solid var(--line);border-radius:12px;padding:1.5rem 1.3rem;
+  background:linear-gradient(160deg,rgba(27,61,49,0.35),rgba(11,23,18,0.55));
+  backdrop-filter:blur(6px);transition:transform .35s ease,border-color .35s ease;}
+.feat-card:hover{transform:translateY(-5px);border-color:var(--gold);}
+.feat-card .ic{width:26px;height:26px;color:var(--gold);margin-bottom:.9rem;}
+.feat-card .ic svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.6;}
+.feat-card h4{font-family:'Inter',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:.03em;color:var(--ivory);text-transform:uppercase;}
+.feat-close{text-align:center;margin-top:3rem;}
+.feat-close p{color:var(--ivory-dim);font-size:1.1rem;max-width:44ch;margin:.3rem auto 0;font-family:'Fraunces',serif;}
+.feat-close .g{color:var(--gold);}
+
+/* ---------- PERSONALIZATION (sec9) ---------- */
+.pers{background:linear-gradient(180deg,var(--emerald),var(--ink));}
+.pers-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+@media(max-width:800px){.pers-grid{grid-template-columns:1fr;}}
+.pers-list{display:grid;gap:.55rem;margin-top:1.5rem;}
+.pers-list p{color:var(--muted);padding-left:1.4rem;position:relative;}
+.pers-list p::before{content:"✓";position:absolute;left:0;color:var(--gold);font-size:.85rem;}
+.pers-center{font-family:'Fraunces',serif;font-size:clamp(1.4rem,2.6vw,2rem);color:var(--ivory);margin-top:2rem;}
+.pers-center .g{color:var(--gold);font-style:italic;}
+
+/* ---------- CONVERSION CTA (sec10) ---------- */
+.conv{position:relative;background:radial-gradient(130% 110% at 50% 0%,var(--emerald-2),var(--ink) 65%);text-align:center;overflow:hidden;}
+.conv-glow{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:80vw;max-width:900px;height:600px;
+  background:radial-gradient(circle,rgba(198,161,92,0.14),transparent 60%);filter:blur(30px);pointer-events:none;}
+.conv .inner{position:relative;z-index:2;max-width:760px;margin:0 auto;}
+.conv .h-lg{margin-bottom:1.6rem;}
+.conv .lede{margin:0 auto 1.2rem;}
+.conv-tag{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.2rem,2.4vw,1.7rem);color:var(--gold-soft);margin:1.4rem auto 2.2rem;}
+
+/* ---------- ASSESSMENT MODAL (sec11) ---------- */
+.assess-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
+  background:rgba(6,14,10,0.86);backdrop-filter:blur(10px);padding:1.2rem;}
+.assess-overlay.show{display:flex;animation:fadeIn .35s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.assess-card{width:100%;max-width:620px;background:linear-gradient(165deg,var(--emerald-2),var(--ink));
+  border:1px solid var(--line);border-radius:20px;padding:clamp(1.6rem,4vw,2.8rem);position:relative;
+  box-shadow:0 40px 100px rgba(0,0,0,0.6);max-height:92vh;overflow-y:auto;animation:slideUp .45s cubic-bezier(.16,.8,.3,1);}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+.assess-close{position:absolute;top:1.1rem;right:1.2rem;background:none;border:none;color:var(--muted);
+  font-size:1.5rem;cursor:pointer;line-height:1;transition:color .2s;}
+.assess-close:hover{color:var(--gold);}
+.assess-progress{display:flex;align-items:center;gap:.8rem;margin-bottom:1.8rem;}
+.assess-progress .track{flex:1;height:5px;border-radius:5px;background:rgba(43,74,61,0.7);overflow:hidden;}
+.assess-progress .track i{display:block;height:100%;width:14%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));border-radius:5px;transition:width .5s cubic-bezier(.16,.8,.3,1);}
+.assess-progress .lbl{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);font-weight:600;white-space:nowrap;}
+.assess-step{display:none;animation:fadeIn .4s ease;}
+.assess-step.active{display:block;}
+.assess-step .eyebrow{margin-bottom:.7rem;}
+.assess-step h3{font-size:clamp(1.4rem,3vw,1.9rem);margin-bottom:.5rem;color:var(--ivory);}
+.assess-step .sub{color:var(--muted);font-size:.95rem;margin-bottom:1.6rem;}
+.field{margin-bottom:1.1rem;text-align:left;}
+.field label{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ivory-dim);margin-bottom:.45rem;font-weight:600;}
+.field input,.field select{width:100%;background:rgba(11,23,18,0.7);border:1px solid var(--line);border-radius:10px;
+  padding:.9rem 1rem;color:var(--ivory);font-family:'Inter',sans-serif;font-size:1rem;transition:border-color .2s;}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold);}
+.field input::placeholder{color:var(--muted-dark);}
+.field .consent-row{display:flex;gap:.7rem;align-items:flex-start;text-transform:none;letter-spacing:normal;font-weight:400;font-size:.78rem;line-height:1.55;color:var(--ivory-dim);cursor:pointer;margin-bottom:0;}
+.field .consent-row input{width:auto;flex:none;margin-top:.2rem;padding:0;accent-color:var(--gold);}
+.field .consent-row a{color:var(--gold);text-decoration:underline;}
+
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;text-align:left;}
+@media(max-width:480px){.opt-grid{grid-template-columns:1fr;}}
+.opt{border:1px solid var(--line);border-radius:10px;padding:.85rem 1rem;cursor:pointer;font-size:.9rem;
+  color:var(--ivory-dim);background:rgba(11,23,18,0.5);transition:all .2s;display:flex;align-items:center;gap:.6rem;}
+.opt:hover{border-color:var(--gold-soft);}
+.opt.sel{border-color:var(--gold);background:rgba(198,161,92,0.12);color:var(--gold-soft);}
+.opt .box{width:16px;height:16px;border:1.5px solid var(--muted-dark);border-radius:5px;flex-shrink:0;transition:all .2s;position:relative;}
+.opt.sel .box{border-color:var(--gold);background:var(--gold);}
+.opt.sel .box::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#20180A;font-size:.7rem;font-weight:700;}
+.assess-nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1.8rem;}
+.assess-nav .back{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;font-weight:500;transition:color .2s;}
+.assess-nav .back:hover{color:var(--ivory);}
+.assess-nav .btn{padding:.85rem 1.9rem;font-size:.9rem;}
+.assess-final{text-align:center;padding:1rem 0;}
+.assess-final .check{width:70px;height:70px;margin:0 auto 1.4rem;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-soft),var(--gold));display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 40px rgba(198,161,92,0.4);animation:pop .5s cubic-bezier(.2,1.3,.4,1);}
+@keyframes pop{from{transform:scale(0);}to{transform:scale(1);}}
+.assess-final .check svg{width:34px;height:34px;stroke:#20180A;stroke-width:3;fill:none;}
+.assess-final h3{font-size:1.7rem;margin-bottom:.7rem;}
+.assess-final p{color:var(--muted);max-width:40ch;margin:0 auto 1.5rem;}
+
+/* ---------- FINAL ---------- */
+.final{background:radial-gradient(120% 120% at 50% 100%,var(--emerald-2),var(--ink) 70%);text-align:center;position:relative;overflow:hidden;}
+.final-glow{position:absolute;bottom:-30%;left:50%;transform:translateX(-50%);width:70vw;max-width:700px;height:500px;
+  background:radial-gradient(circle,rgba(198,161,92,0.12),transparent 62%);filter:blur(30px);pointer-events:none;}
+.final .inner{position:relative;z-index:2;}
+.final .h-lg{max-width:16ch;margin:0 auto 1.4rem;}
+.final .lede{margin:0 auto 2.2rem;max-width:46ch;}
+.footer{padding:3.5rem 0 3rem;text-align:center;border-top:1px solid var(--line);background:var(--ink);}
+.footer .wordmark{font-size:1.8rem;margin-bottom:.4rem;}
+.footer .tag{color:var(--muted);font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;}
+.footer .fine{color:var(--muted-dark);font-size:.72rem;max-width:60ch;margin:1.6rem auto 0;line-height:1.6;}
+
+/* ---------- STICKY MICRO CTA ---------- */
+.floatcta{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(140%);z-index:90;
+  background:rgba(11,23,18,0.9);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:100px;
+  padding:.55rem .6rem .55rem 1.4rem;display:flex;align-items:center;gap:1rem;transition:transform .5s cubic-bezier(.16,.8,.3,1);box-shadow:0 20px 50px rgba(0,0,0,0.4);}
+.floatcta.show{transform:translateX(-50%) translateY(0);}
+.floatcta span{font-size:.85rem;color:var(--ivory-dim);font-weight:500;}
+.floatcta .btn{padding:.65rem 1.4rem;font-size:.82rem;}
+@media(max-width:600px){.floatcta span{display:none;}.floatcta{padding:.5rem;}}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <div>
+      <div class="wordmark">SYCCO<span>.</span></div>
+      <div class="nav-tag">Someone You Can Count On</div>
+    </div>
+    <button class="btn btn-gold nav-cta" onclick="openAssess()">Build My Roadmap</button>
+  </div>
+</header>
+
+<!-- ============ SECTION 1 — HERO ============ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow hero-eyebrow reveal in">Your next 12 months could look very different.</p>
+        <h1 class="reveal in d1">What could an extra <span class="amount">$50,000–$250,000</span> change for you?</h1>
+        <p class="hero-sub reveal in d2">You may already have more opportunities around you than you realize.</p>
+        <p class="hero-body reveal in d2">SYCCO looks at the bigger picture — then helps identify where money, time, potential, or opportunity may be slipping through the cracks, and begins building a personalized roadmap designed around where you want to go next.</p>
+        <div class="hero-chips reveal in d3">
+          <span>Income</span><span>Business</span><span>Credit</span><span>Capital</span><span>Debt</span><span>Assets</span><span>Investments</span><span>Opportunities</span><span>Goals</span><span>Strategy</span>
+        </div>
+        <p class="hero-question reveal in d3">You don't need another generic checklist. You need to know: <span class="gold-text">what should I do next?</span></p>
+        <div class="reveal in d4">
+          <button class="btn btn-gold" onclick="openAssess()">Build My Wealth Roadmap <span class="arrow">→</span></button>
+          <p class="micro">Start with a short personalized assessment.<br><strong>No generic plan. No one-size-fits-all strategy.</strong></p>
+        </div>
+      </div>
+      <div class="hero-visual reveal in d2">
+        <div class="roadmap-stage" id="roadmapStage">
+          <div class="roadmap-head"><span><span class="dot"></span>Personalized Roadmap</span><span>SYCCO</span></div>
+          <svg class="roadmap-svg" id="roadmapSvg" viewBox="0 0 400 408" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="goldgrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#E7CE9A"/><stop offset="1" stop-color="#C6A15C"/>
+              </linearGradient>
+            </defs>
+            <path class="rm-line" id="rmLine" d=""></path>
+            <g id="rmCenter">
+              <circle cx="200" cy="210" r="46" fill="rgba(198,161,92,0.08)" stroke="#C6A15C" stroke-width="1.2"/>
+              <text class="rm-center-label" x="200" y="206">Your</text>
+              <text class="rm-center-label" x="200" y="224">Roadmap</text>
+              <text class="rm-center-sub" x="200" y="242">12 Months</text>
+            </g>
+            <g id="rmNodes"></g>
+          </svg>
+          <div class="roadmap-foot"><div class="bar"><i id="rmBar"></i></div><span class="pct" id="rmPct">Assembling…</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 — THE REAL PROBLEM ============ -->
+<section class="problem pad">
+  <div class="wrap txt-narrow">
+    <p class="eyebrow section-eyebrow reveal">The real problem</p>
+    <h2 class="h-lg reveal d1">Making money and building wealth are not the same thing.</h2>
+    <div class="stmt-list reveal d1">
+      <p>You can work hard. Make good money. Build a business. Develop valuable skills. Meet the right people. Own assets. Have good credit.</p>
+      <p>And still find yourself thinking: <span style="color:var(--ivory);font-style:italic;font-family:'Fraunces',serif;">“I should be further ahead by now.”</span></p>
+      <p>Usually, the problem isn't a lack of effort. It's that nobody has ever looked at the entire picture at the same time.</p>
+    </div>
+    <p class="lede reveal d2" style="margin-bottom:1.4rem;">Most financial decisions are made separately — scattered across your life:</p>
+    <div class="scatter reveal d2">
+      <span>Income</span><span>Credit</span><span>Business</span><span>Investments</span><span>Debt</span><span>Opportunities</span>
+    </div>
+    <p class="lede reveal d3" style="color:var(--gold-soft);font-family:'Fraunces',serif;font-style:italic;">SYCCO is designed to connect the dots.</p>
+  </div>
+</section>
+
+<div class="big-statement wrap">
+  <h2 class="h-lg reveal">The opportunity isn't always making more.<span class="accent">Sometimes it's seeing more.</span></h2>
+</div>
+
+<!-- ============ SECTION 3 — WHAT ARE YOU MISSING ============ -->
+<section class="dash pad">
+  <div class="wrap">
+    <div class="center txt-narrow">
+      <p class="eyebrow section-eyebrow reveal">See what you may be missing</p>
+      <h2 class="h-lg reveal d1">What are you leaving on the table?</h2>
+      <p class="lede center reveal d2" style="margin-top:1.2rem;">Small changes in the right places can create disproportionately large results. Your assessment helps identify areas worth examining more closely.</p>
+    </div>
+    <div class="dash-grid" id="dashGrid"></div>
+    <p class="lede center reveal" style="margin-top:3rem;color:var(--gold-soft);font-family:'Fraunces',serif;font-style:italic;font-size:1.3rem;">You don't need every opportunity. You need the <span style="color:var(--gold);font-style:normal;">right</span> opportunities.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 4 — PERSONALIZED ASSESSMENT / STEPS ============ -->
+<section class="steps pad">
+  <div class="wrap">
+    <div class="txt-narrow">
+      <p class="eyebrow section-eyebrow reveal">How it works</p>
+      <h2 class="h-lg reveal d1">Your strategy should start with you.</h2>
+      <p class="lede reveal d2" style="margin-top:1.2rem;">Generic advice creates generic results. Your roadmap begins by understanding where you actually are today.</p>
+    </div>
+    <div class="steps-wrap">
+      <div class="step reveal"><div class="step-num">01</div><div class="step-body"><h3>Tell us where you are</h3><p>Complete a short assessment covering your goals, income, business, assets, credit, challenges, resources, and opportunities.</p></div></div>
+      <div class="step reveal"><div class="step-num">02</div><div class="step-body"><h3>Discover what you may be missing</h3><p>SYCCO helps identify potential gaps, inefficiencies, overlooked opportunities, and areas that deserve closer attention.</p></div></div>
+      <div class="step reveal"><div class="step-num">03</div><div class="step-body"><h3>Build your 12-month roadmap</h3><p>Turn those opportunities into an organized sequence of priorities and actionable next steps.</p></div></div>
+      <div class="step reveal"><div class="step-num">04</div><div class="step-body"><h3>Start executing</h3><p>A plan sitting in a folder changes nothing. SYCCO helps you move from information to action.</p></div></div>
+      <div class="step reveal"><div class="step-num">05</div><div class="step-body"><h3>Don't do it alone</h3><p>Receive ongoing AI-powered mentorship, accountability, resources, strategic guidance, progress tracking, and access to specialized professionals and solutions when appropriate.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 — THE BIG IDEA ============ -->
+<section class="bigidea pad">
+  <div class="wrap">
+    <p class="eyebrow section-eyebrow reveal center">The big idea</p>
+    <h2 class="h-lg reveal d1">One good decision can change an entire year.</h2>
+    <div class="reveal-lines">
+      <p class="reveal">One overlooked opportunity.</p>
+      <p class="reveal">One unnecessary expense.</p>
+      <p class="reveal">One smarter use of capital.</p>
+      <p class="reveal">One additional revenue stream.</p>
+      <p class="reveal">One strategic introduction.</p>
+      <p class="reveal">One better business decision.</p>
+      <p class="reveal">One valuable new skill.</p>
+      <p class="reveal">One asset repositioned.</p>
+      <p class="reveal">One debt eliminated.</p>
+      <p class="reveal">One opportunity acted on at the right time.</p>
+    </div>
+    <div class="bigidea-close">
+      <h3 class="h-md reveal">Success is rarely one giant move.<span class="accent"> It's a series of better moves made in the right order.</span></h3>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 6 — 12-MONTH VALUE ============ -->
+<section class="value pad">
+  <div class="wrap">
+    <div class="center txt-narrow">
+      <p class="eyebrow section-eyebrow reveal">The 12-month wealth roadmap</p>
+      <h2 class="h-lg reveal d1">What could your next 12 months be worth?</h2>
+    </div>
+    <div class="value-nums reveal d2">
+      <span class="n">$50K</span><span class="n">$100K</span><span class="n">$150K</span><span class="n">$250K+</span>
+    </div>
+    <p class="lede center reveal d2" style="margin:0 auto;">The objective isn't to find a magic investment. It isn't to promise overnight wealth. And it definitely isn't another get-rich-quick scheme. The objective is to identify the financial, business, career, and personal opportunities that could make the greatest difference in <em>your</em> situation — then organize them into a plan.</p>
+    <ul class="two-col-list reveal d2">
+      <li>Increasing income.</li>
+      <li>Growing a business.</li>
+      <li>Reducing unnecessary expenses.</li>
+      <li>Improving credit.</li>
+      <li>Accessing capital.</li>
+      <li>Managing debt strategically.</li>
+      <li>Creating additional revenue streams.</li>
+      <li>Increasing the value of existing assets.</li>
+      <li>Finding strategic partnerships.</li>
+      <li>Using technology and AI more effectively.</li>
+      <li>Identifying opportunities already sitting inside your network, experience, or resources.</li>
+    </ul>
+    <div class="center" style="margin-top:2.6rem;">
+      <button class="btn btn-gold reveal" onclick="openAssess()">Show Me My Opportunities <span class="arrow">→</span></button>
+    </div>
+    <p class="disclosure">Individual results vary. Financial outcomes are not guaranteed. Results depend on each person's circumstances, decisions, execution, resources, market conditions, and other factors.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 7 — THE DIFFERENCE ============ -->
+<section class="diff pad">
+  <div class="wrap">
+    <p class="eyebrow section-eyebrow reveal">The difference</p>
+    <h2 class="h-lg reveal d1">Information is everywhere. <span class="g">Clarity is rare.</span></h2>
+    <p class="lede center reveal d2" style="margin:0 auto;">You can find a million videos telling you what you <em>could</em> do:</p>
+    <div class="idea-cloud reveal d2">
+      <span>Start a business</span><span>Buy real estate</span><span>Invest</span><span>Fix your credit</span><span>Build a brand</span><span>Use AI</span><span>Start another income stream</span><span>Save more</span><span>Spend less</span><span>Network more</span>
+    </div>
+    <p class="lede center reveal d3" style="margin:0 auto;">The problem isn't access to ideas. The problem is figuring out: <span style="color:var(--ivory);font-family:'Fraunces',serif;font-style:italic;">what makes sense for me? And what should I do first?</span></p>
+    <p class="diff-close reveal">That's the question <span class="g">SYCCO</span> was built to help answer.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 8 — SOMEONE YOU CAN COUNT ON ============ -->
+<section class="feat pad">
+  <div class="wrap">
+    <div class="txt-narrow">
+      <p class="eyebrow section-eyebrow reveal">Someone you can count on</p>
+      <h2 class="h-lg reveal d1">A roadmap is only the beginning.</h2>
+      <p class="lede reveal d2" style="margin-top:1.2rem;">Plans are easy to create. Execution is where things fall apart. SYCCO is designed to stay with you beyond the assessment.</p>
+    </div>
+    <div class="feat-grid" id="featGrid"></div>
+    <div class="feat-close reveal">
+      <p>Not another course you forget about. Not another PDF sitting in your inbox. A system designed to help you <span class="g">keep moving.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 9 — PERSONALIZATION ============ -->
+<section class="pers pad">
+  <div class="wrap pers-grid">
+    <div>
+      <p class="eyebrow section-eyebrow reveal">Personalization</p>
+      <h2 class="h-md reveal d1">Your life isn't generic. Your plan shouldn't be either.</h2>
+      <p class="lede reveal d2" style="margin-top:1.2rem;">Two people can earn the exact same amount of money and need completely different strategies.</p>
+    </div>
+    <div class="reveal d2">
+      <p style="color:var(--ivory-dim);margin-bottom:.4rem;font-weight:500;">Your roadmap should account for:</p>
+      <div class="pers-list">
+        <p>Where you are.</p><p>What you have.</p><p>What you owe.</p><p>What you earn.</p><p>What you know.</p><p>Who you know.</p><p>What you're building.</p><p>What you're trying to accomplish.</p><p>And how quickly you want to get there.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap center">
+    <p class="pers-center reveal">The plan changes <span class="g">because the person changes.</span></p>
+  </div>
+</section>
+
+<!-- ============ SECTION 10 — CONVERSION CTA ============ -->
+<section class="conv pad">
+  <div class="conv-glow"></div>
+  <div class="wrap inner">
+    <p class="eyebrow section-eyebrow reveal center">Your move</p>
+    <h2 class="h-lg reveal d1">Find out what your next 12 months could look like.</h2>
+    <p class="lede reveal d2">Answer a few questions about where you are today. SYCCO will begin identifying areas where your biggest opportunities may exist and start building your personalized roadmap.</p>
+    <p class="conv-tag reveal d2">You already know where you are. Let's figure out where you could be.</p>
+    <div class="reveal d3">
+      <button class="btn btn-gold" style="font-size:1.05rem;padding:1.15rem 2.6rem;" onclick="openAssess()">Start My Free Assessment <span class="arrow">→</span></button>
+      <p class="micro center" style="margin-left:auto;margin-right:auto;">Takes only a few minutes. &nbsp;·&nbsp; Personalized to your goals. &nbsp;·&nbsp; No generic roadmap.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL ============ -->
+<section class="final pad">
+  <div class="final-glow"></div>
+  <div class="wrap inner">
+    <h2 class="h-lg reveal">A clearer tomorrow starts today.</h2>
+    <p class="lede center reveal d1">Your next opportunity may already be closer than you think. The first step is finding it.</p>
+    <button class="btn btn-gold reveal d2" style="font-size:1.05rem;padding:1.15rem 2.6rem;" onclick="openAssess()">Build My Roadmap <span class="arrow">→</span></button>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="wordmark">SYCCO<span>.</span></div>
+    <div class="tag">Someone You Can Count On</div>
+    <p class="fine">Individual results vary. Financial outcomes are not guaranteed. SYCCO provides education, assessment, planning, and mentorship. Results depend on each person's circumstances, decisions, execution, resources, market conditions, and other factors.</p>
+    <div class="footer-links" style="margin-top:1.2rem;display:flex;gap:1.5rem;justify-content:center;">
+      <a href="https://app.someoneyoucancounton.com/privacy" target="_blank" rel="noopener" style="color:var(--gold-soft);font-size:.85rem;text-decoration:none;opacity:.75;transition:opacity .2s;"
+         onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.75'">Privacy Policy</a>
+      <a href="https://app.someoneyoucancounton.com/terms" target="_blank" rel="noopener" style="color:var(--gold-soft);font-size:.85rem;text-decoration:none;opacity:.75;transition:opacity .2s;"
+         onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.75'">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ STICKY MICRO CTA ============ -->
+<div class="floatcta" id="floatcta">
+  <span>See what you may be missing.</span>
+  <button class="btn btn-gold" onclick="openAssess()">Build My Roadmap</button>
+</div>
+
+<!-- ============ ASSESSMENT MODAL (SECTION 11) ============ -->
+<div class="assess-overlay" id="assessOverlay">
+  <div class="assess-card">
+    <button class="assess-close" onclick="closeAssess()">✕</button>
+    <div class="assess-progress"><div class="track"><i id="assessBar"></i></div><span class="lbl" id="assessLbl">Step 1 of 7</span></div>
+
+    <!-- Step 1: intro + contact -->
+    <div class="assess-step active" data-step="1">
+      <p class="eyebrow">Let's build your roadmap</p>
+      <h3>First, let's understand where you are today.</h3>
+      <p class="sub">A few quick details so we can personalize your roadmap and send it to you.</p>
+      <div class="field"><label>First name</label><input type="text" id="f_first" placeholder="Your first name"></div>
+      <div class="field"><label>Email</label><input type="email" id="f_email" placeholder="you@example.com"></div>
+      <div class="field"><label>Mobile number</label><input type="tel" id="f_phone" placeholder="(555) 000-0000"></div>
+      <div class="field"><label class="consent-row"><input type="checkbox" id="f_sms"><span id="f_sms_text">By checking this box, I agree to receive text messages from Lucky 13 Ventures LLC dba SYCCO about my appointments, including confirmations, reminders and rescheduling updates, and customer support at the mobile number provided. Message frequency varies. Message and data rates may apply. Reply STOP to unsubscribe or HELP for help. Consent is not a condition of purchase. See our <a href="https://app.someoneyoucancounton.com/terms" target="_blank" rel="noopener">Terms</a> and <a href="https://app.someoneyoucancounton.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label></div>
+    </div>
+
+    <!-- Step 2: goals -->
+    <div class="assess-step" data-step="2">
+      <p class="eyebrow">Your goals</p>
+      <h3>What matters most right now?</h3>
+      <p class="sub">Select all that apply — this shapes what we look at first.</p>
+      <div class="opt-grid" data-multi>
+        <div class="opt"><span class="box"></span>Increase my income</div>
+        <div class="opt"><span class="box"></span>Grow my business</div>
+        <div class="opt"><span class="box"></span>Add a new revenue stream</div>
+        <div class="opt"><span class="box"></span>Improve my credit</div>
+        <div class="opt"><span class="box"></span>Access capital</div>
+        <div class="opt"><span class="box"></span>Reduce or manage debt</div>
+        <div class="opt"><span class="box"></span>Invest more strategically</div>
+        <div class="opt"><span class="box"></span>Build long-term wealth</div>
+      </div>
+    </div>
+
+    <!-- Step 3: situation -->
+    <div class="assess-step" data-step="3">
+      <p class="eyebrow">Where you are</p>
+      <h3>Which best describes you today?</h3>
+      <p class="sub">Pick the closest fit.</p>
+      <div class="opt-grid" data-single>
+        <div class="opt"><span class="box"></span>Entrepreneur / business owner</div>
+        <div class="opt"><span class="box"></span>Professional / high-income earner</div>
+        <div class="opt"><span class="box"></span>Salesperson / independent contractor</div>
+        <div class="opt"><span class="box"></span>Investor</div>
+        <div class="opt"><span class="box"></span>Side-hustler / building something new</div>
+        <div class="opt"><span class="box"></span>Rebuilding financially</div>
+      </div>
+    </div>
+
+    <!-- Step 4: resources -->
+    <div class="assess-step" data-step="4">
+      <p class="eyebrow">What you have to work with</p>
+      <h3>Which of these do you currently have?</h3>
+      <p class="sub">Assets, skills, and relationships are often the most overlooked opportunities. Select all that apply.</p>
+      <div class="opt-grid" data-multi>
+        <div class="opt"><span class="box"></span>An existing business</div>
+        <div class="opt"><span class="box"></span>Good or improving credit</div>
+        <div class="opt"><span class="box"></span>Real estate or property</div>
+        <div class="opt"><span class="box"></span>Investable savings or capital</div>
+        <div class="opt"><span class="box"></span>Specialized skills or expertise</div>
+        <div class="opt"><span class="box"></span>A strong network</div>
+        <div class="opt"><span class="box"></span>Time to invest in growth</div>
+        <div class="opt"><span class="box"></span>Not sure yet — help me find out</div>
+      </div>
+    </div>
+
+    <!-- Step 5: challenge -->
+    <div class="assess-step" data-step="5">
+      <p class="eyebrow">Your biggest challenge</p>
+      <h3>What's slowing you down most?</h3>
+      <p class="sub">Pick the one that resonates most.</p>
+      <div class="opt-grid" data-single>
+        <div class="opt"><span class="box"></span>I don't know what to do next</div>
+        <div class="opt"><span class="box"></span>Too many options, no clear order</div>
+        <div class="opt"><span class="box"></span>Not enough capital or credit</div>
+        <div class="opt"><span class="box"></span>No accountability or support</div>
+        <div class="opt"><span class="box"></span>Time — I'm stretched thin</div>
+        <div class="opt"><span class="box"></span>I'm doing okay but know I could do more</div>
+      </div>
+    </div>
+
+    <!-- Step 6: 12-month goal -->
+    <div class="assess-step" data-step="6">
+      <p class="eyebrow">Your 12-month target</p>
+      <h3>What would make the next year a win?</h3>
+      <p class="sub">There's no wrong answer — this helps set the pace of your roadmap.</p>
+      <div class="opt-grid" data-single>
+        <div class="opt"><span class="box"></span>An extra $10K–$50K</div>
+        <div class="opt"><span class="box"></span>An extra $50K–$100K</div>
+        <div class="opt"><span class="box"></span>An extra $100K–$250K</div>
+        <div class="opt"><span class="box"></span>$250K+ / a major leap</div>
+        <div class="opt"><span class="box"></span>Stability &amp; a clear plan first</div>
+        <div class="opt"><span class="box"></span>Still figuring it out</div>
+      </div>
+    </div>
+
+    <!-- Step 7: pace -->
+    <div class="assess-step" data-step="7">
+      <p class="eyebrow">Your pace</p>
+      <h3>How ready are you to move?</h3>
+      <p class="sub">Last one — then we build your roadmap.</p>
+      <div class="opt-grid" data-single>
+        <div class="opt"><span class="box"></span>Ready to start now</div>
+        <div class="opt"><span class="box"></span>Soon — within a month or two</div>
+        <div class="opt"><span class="box"></span>Exploring — gathering information</div>
+      </div>
+    </div>
+
+    <!-- Final -->
+    <div class="assess-step" data-step="final">
+      <div class="assess-final">
+        <div class="check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
+        <h3 id="finalName">Your roadmap is being built.</h3>
+        <p>Based on what you shared, SYCCO is assembling a personalized 12-month roadmap around your goals, resources, and opportunities. We'll reach out with your next steps shortly.</p>
+        <button class="btn btn-gold" onclick="closeAssess()">Done</button>
+      </div>
+    </div>
+
+    <div class="assess-nav" id="assessNav">
+      <button class="back" id="assessBack" onclick="assessPrev()" style="visibility:hidden;">← Back</button>
+      <button class="btn btn-gold" id="assessNext" onclick="assessNext()">Continue <span class="arrow">→</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ SCROLL REVEAL ============ */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+
+/* ============ NAV + FLOAT CTA ============ */
+var nav=document.getElementById('nav'),floatcta=document.getElementById('floatcta');
+window.addEventListener('scroll',function(){
+  var y=window.scrollY;
+  nav.classList.toggle('scrolled',y>40);
+  floatcta.classList.toggle('show',y>window.innerHeight*0.9);
+});
+
+/* ============ OPPORTUNITY DASHBOARD ============ */
+var ic={
+  income:'<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>',
+  business:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  revenue:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9h4.5a1.5 1.5 0 0 1 0 3H9m0 0h4.5a1.5 1.5 0 0 1 0 3H9"/>',
+  credit:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  capital:'<circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/>',
+  debt:'<path d="M3 12h18"/><path d="M7 8l-4 4 4 4"/>',
+  expense:'<path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><circle cx="16" cy="14" r="1.2"/>',
+  asset:'<path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-6h4v6"/>',
+  invest:'<path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/>',
+  valuation:'<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+  career:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  partner:'<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5M22 20c0-3-3-5-6-5"/>',
+  network:'<circle cx="12" cy="5" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 7v4M10.5 13l-4 3M13.5 13l4 3"/>',
+  ai:'<rect x="5" y="7" width="14" height="12" rx="2"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/>',
+  goals:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>'
+};
+var dash=[['Income Optimization','income'],['Business Growth','business'],['New Revenue Streams','revenue'],['Credit Optimization','credit'],['Access to Capital','capital'],['Debt Strategy','debt'],['Expense Reduction','expense'],['Asset Optimization','asset'],['Investment Opportunities','invest'],['Business Valuation','valuation'],['Career Opportunities','career'],['Strategic Partnerships','partner'],['Network & Relationships','network'],['Automation & AI','ai'],['Personal Financial Goals','goals']];
+var dg=document.getElementById('dashGrid');
+dash.forEach(function(d,i){
+  var c=document.createElement('div');c.className='dash-card reveal';c.style.transitionDelay=(i%3*0.08)+'s';
+  c.innerHTML='<span class="ic"><svg viewBox="0 0 24 24">'+ic[d[1]]+'</svg></span><h4>'+d[0]+'</h4>';
+  dg.appendChild(c);io.observe(c);
+});
+
+/* ============ FEATURES ============ */
+var feats=[['Personalized Strategy','goals'],['AI-Powered Mentorship','ai'],['Human Support','partner'],['Accountability','valuation'],['Opportunity Identification','invest'],['Action Plans','business'],['Progress Tracking','income'],['Business Resources','asset'],['Financial Education','credit'],['Access to Specialists','career'],['Strategic Connections','network'],['Ongoing Roadmap Adjustments','revenue']];
+var fg=document.getElementById('featGrid');
+feats.forEach(function(f,i){
+  var c=document.createElement('div');c.className='feat-card reveal';c.style.transitionDelay=(i%4*0.07)+'s';
+  c.innerHTML='<span class="ic"><svg viewBox="0 0 24 24">'+ic[f[1]]+'</svg></span><h4>'+f[0]+'</h4>';
+  fg.appendChild(c);io.observe(c);
+});
+
+/* ============ ROADMAP HERO ANIMATION ("the video") ============ */
+(function(){
+  var labels=['INCOME','BUSINESS','CREDIT','CAPITAL','DEBT','ASSETS','INVESTMENTS','OPPORTUNITIES','GOALS','STRATEGY'];
+  var cx=200,cy=210,R=150,nodes=[],svgNS='http://www.w3.org/2000/svg';
+  var g=document.getElementById('rmNodes');
+  var N=labels.length;
+  for(var i=0;i<N;i++){
+    var ang=(-90+ i*(360/N))*Math.PI/180;
+    var x=cx+R*Math.cos(ang), y=cy+R*Math.sin(ang);
+    nodes.push({x:x,y:y,label:labels[i]});
+    var grp=document.createElementNS(svgNS,'g');grp.setAttribute('class','rm-node');grp.setAttribute('data-i',i);
+    var core=document.createElementNS(svgNS,'circle');core.setAttribute('cx',x);core.setAttribute('cy',y);core.setAttribute('r',6);core.setAttribute('class','rm-core');
+    var t=document.createElementNS(svgNS,'text');t.setAttribute('class','rm-label');
+    // place label outside the ring
+    var lx=cx+(R+22)*Math.cos(ang), ly=cy+(R+22)*Math.sin(ang)+3;
+    if(lx<70)lx=70; if(lx>330)lx=330;
+    t.setAttribute('x',lx);t.setAttribute('y',ly);t.textContent=labels[i];
+    grp.appendChild(core);grp.appendChild(t);g.appendChild(grp);
+  }
+  var line=document.getElementById('rmLine');
+  var bar=document.getElementById('rmBar'),pct=document.getElementById('rmPct');
+  var nodeEls=g.querySelectorAll('.rm-node');
+  var started=false;
+
+  function buildPath(upto){
+    var d='';
+    for(var i=0;i<=upto&&i<N;i++){
+      // path from node to center hub creating a connecting web
+      var n=nodes[i];
+      d+=(i===0?'M':'L')+n.x.toFixed(1)+' '+n.y.toFixed(1)+' ';
+      d+='L'+cx+' '+cy+' ';
+    }
+    return d;
+  }
+
+  function run(){
+    if(started)return;started=true;
+    var i=0;
+    var timer=setInterval(function(){
+      if(i>=N){
+        clearInterval(timer);
+        pct.textContent='Roadmap ready';
+        // draw full connecting ring outline
+        var ring='';
+        for(var k=0;k<N;k++){ring+=(k===0?'M':'L')+nodes[k].x.toFixed(1)+' '+nodes[k].y.toFixed(1)+' ';}
+        ring+='Z';
+        setTimeout(function(){
+          line.setAttribute('d',ring);
+          line.style.transition='stroke-dashoffset 1.6s ease';
+          line.style.strokeDashoffset='0';
+        },250);
+        // loop restart after a pause
+        setTimeout(reset,4200);
+        return;
+      }
+      nodeEls[i].classList.add('lit');
+      line.setAttribute('d',buildPath(i));
+      line.style.transition='none';
+      line.style.strokeDashoffset='0';
+      line.style.strokeDasharray='none';
+      i++;
+      var p=Math.round(i/N*100);
+      bar.style.width=p+'%';pct.textContent='Assembling '+p+'%';
+    },560);
+  }
+
+  function reset(){
+    started=false;
+    nodeEls.forEach(function(el){el.classList.remove('lit');});
+    line.setAttribute('d','');line.style.strokeDasharray='1200';line.style.strokeDashoffset='1200';
+    bar.style.width='0';pct.textContent='Assembling…';
+    setTimeout(run,400);
+  }
+
+  var rio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();}});},{threshold:.4});
+  rio.observe(document.getElementById('roadmapStage'));
+})();
+
+/* ============ ASSESSMENT FLOW ============ */
+var aOverlay=document.getElementById('assessOverlay');
+var steps=document.querySelectorAll('.assess-step');
+var totalSteps=7;var cur=1;
+var aBar=document.getElementById('assessBar'),aLbl=document.getElementById('assessLbl');
+var aBack=document.getElementById('assessBack'),aNext=document.getElementById('assessNext'),aNav=document.getElementById('assessNav');
+
+/* ============================================================
+   GHL LEAD DELIVERY
+   Paste your GoHighLevel Inbound Webhook URL between the quotes
+   below. In GHL: Automation > Workflows > new Workflow >
+   add an "Inbound Webhook" trigger and copy its URL.
+   Leave blank to disable sending (answers still stay in
+   window.syccoAnswers).
+   ============================================================ */
+var GHL_WEBHOOK_URL='https://services.leadconnectorhq.com/hooks/m7qftsrQWEvMYIQrhs8r/webhook-trigger/d8520825-c85f-4acd-bdd0-d9ca1f04dbf5';
+
+function track(name,params){try{if(typeof gtag==='function')gtag('event',name,params||{});}catch(e){}}
+function submitToGHL(payload){
+  if(!GHL_WEBHOOK_URL){return;}
+  try{
+    fetch(GHL_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})
+      .catch(function(){});
+  }catch(e){}
+}
+function openAssess(){aOverlay.classList.add('show');document.body.style.overflow='hidden';goStep(1);track('assessment_open');}
+function closeAssess(){aOverlay.classList.remove('show');document.body.style.overflow='';}
+aOverlay.addEventListener('click',function(e){if(e.target===aOverlay)closeAssess();});
+
+function showStep(name){steps.forEach(function(s){s.classList.toggle('active',s.dataset.step===String(name));});}
+function goStep(n){
+  cur=n;showStep(n);
+  track('assessment_step',{step_number:n,step_of:totalSteps});
+  aBar.style.width=Math.round(n/totalSteps*100)+'%';
+  aLbl.textContent='Step '+n+' of '+totalSteps;
+  aBack.style.visibility=n>1?'visible':'hidden';
+  aNext.innerHTML=(n===totalSteps?'Build My Roadmap':'Continue')+' <span class="arrow">\u2192</span>';
+  document.querySelector('.assess-card').scrollTop=0;
+}
+function assessPrev(){if(cur>1)goStep(cur-1);}
+function assessNext(){
+  // basic validation on step 1
+  if(cur===1){
+    var fn=document.getElementById('f_first').value.trim();
+    var em=document.getElementById('f_email').value.trim();
+    if(!fn||!em||em.indexOf('@')<1){alert('Please enter your first name and a valid email to continue.');return;}
+  }
+  if(cur<totalSteps){goStep(cur+1);}
+  else{finish();}
+}
+function finish(){
+  showStep('final');
+  aNav.style.display='none';
+  aBar.style.width='100%';aLbl.textContent='Complete';
+  var fn=document.getElementById('f_first').value.trim();
+  document.getElementById('finalName').textContent=(fn?fn+', your roadmap is being built.':'Your roadmap is being built.');
+  document.querySelector('.assess-card').scrollTop=0;
+  /* GHL: wire this submit to your CRM/webhook. Collected answers are in window.syccoAnswers */
+  window.syccoAnswers=collectAnswers();
+  track('assessment_complete',{responses:(window.syccoAnswers.responses||[]).length});
+  track('generate_lead',{value:1,currency:'USD'});
+  submitToGHL(window.syccoAnswers);
+}
+function collectAnswers(){
+  var out={first:val('f_first'),email:val('f_email'),phone:val('f_phone'),sms_consent:document.getElementById('f_sms').checked,sms_consent_text:document.getElementById('f_sms_text').textContent.trim(),sms_consent_at:(document.getElementById('f_sms').checked?new Date().toISOString():''),
+    full_name:val('f_first'),source:'SYCCO Roadmap Assessment',page:location.href,
+    submitted_at:new Date().toISOString(),responses:[]};
+  steps.forEach(function(s){
+    if(s.dataset.step==='1'||s.dataset.step==='final')return;
+    var qEl=s.querySelector('h3');var q=qEl?qEl.textContent.trim():('Step '+s.dataset.step);
+    var picks=[];s.querySelectorAll('.opt.sel').forEach(function(o){picks.push(o.textContent.trim());});
+    if(picks.length)out.responses.push({step:s.dataset.step,question:q,answers:picks});
+  });
+  return out;
+}
+function val(id){return document.getElementById(id).value.trim();}
+
+/* option selection: multi vs single */
+document.querySelectorAll('.opt-grid').forEach(function(grid){
+  var single=grid.hasAttribute('data-single');
+  grid.querySelectorAll('.opt').forEach(function(o){
+    o.addEventListener('click',function(){
+      if(single){grid.querySelectorAll('.opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');
+        // auto-advance for single-choice, small delay for feedback
+        setTimeout(function(){if(aOverlay.classList.contains('show'))assessNext();},260);
+      } else {o.classList.toggle('sel');}
+    });
+  });
+});
+
+/* keyboard: escape to close */
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&aOverlay.classList.contains('show'))closeAssess();});
+</script>
+<script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6aa7d1e1c8d7749cb04d64b2" data-source="WEB_USER"></script>
+<script>
+/* Auto-open the LeadConnector chat widget ~1.5s after landing */
+(function(){
+  var DELAY=1500, opened=false, tries=0;
+  function getLauncher(){
+    var cw=document.querySelector('chat-widget');
+    if(cw&&cw.shadowRoot){
+      // the round bubble launcher that expands the full chat window
+      return cw.shadowRoot.querySelector('#lc_text-widget--btn')
+          || cw.shadowRoot.querySelector('.lc_text-widget--bubble');
+    }
+    return null;
+  }
+  function tryOpen(){
+    if(opened)return;
+    tries++;
+    var launcher=getLauncher();
+    var cw=document.querySelector('chat-widget');
+    // only click when widget is loaded and not already open
+    if(launcher && cw && cw.getAttribute('data-active')!=='true'){
+      launcher.click();opened=true;return;
+    }
+    if(launcher && cw && cw.getAttribute('data-active')==='true'){opened=true;return;}
+    if(tries<40)setTimeout(tryOpen,500); // retry up to ~20s while widget loads
+  }
+  window.addEventListener('load',function(){setTimeout(tryOpen,DELAY);});
+})();
+</script>
+</body>
+</html>
