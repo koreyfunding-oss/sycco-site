@@ -695,12 +695,26 @@ section{position:relative;}
       </div>
     </div>
 
+    <!-- Step 8: mentor alignment -->
+    <div class="assess-step" data-step="8">
+      <p class="eyebrow">Your mentor match</p>
+      <h3>What kind of support would help you most right now?</h3>
+      <p class="sub">Choose the style that feels most useful. This helps us introduce you to the right AI mentor when you create your account.</p>
+      <div class="opt-grid" data-single>
+        <div class="opt" data-mentor-signals="strategy roadmap planning credit wealth"><span class="box"></span>Give me a clear strategy, roadmap, and plan.</div>
+        <div class="opt" data-mentor-signals="accountability execution focus follow-through"><span class="box"></span>Keep me accountable and moving forward.</div>
+        <div class="opt" data-mentor-signals="calm balance stress reset"><span class="box"></span>Help me reset, find balance, and move with clarity.</div>
+        <div class="opt" data-mentor-signals="motivation momentum confidence"><span class="box"></span>Bring energy, momentum, and confidence to my goals.</div>
+        <div class="opt" data-mentor-signals="listening support reflection connection"><span class="box"></span>Listen, help me think things through, and support me.</div>
+      </div>
+    </div>
+
     <!-- Final -->
     <div class="assess-step" data-step="final">
       <div class="assess-final">
         <div class="check"><svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"/></svg></div>
         <h3 id="finalName">Your roadmap is being built.</h3>
-        <p>Based on what you shared, SYCCO is assembling a personalized 12-month roadmap around your goals, resources, and opportunities. We'll reach out with your next steps shortly.</p>
+        <p>Based on what you shared, SYCCO is assembling your personalized 12-month roadmap and preparing your AI mentor match. We’ll send your secure invitation and next steps shortly.</p>
         <button class="btn btn-gold" onclick="closeAssess()">Done</button>
       </div>
     </div>
@@ -841,7 +855,7 @@ feats.forEach(function(f,i){
 /* ============ ASSESSMENT FLOW ============ */
 var aOverlay=document.getElementById('assessOverlay');
 var steps=document.querySelectorAll('.assess-step');
-var totalSteps=7;var cur=1;
+var totalSteps=8;var cur=1;
 var aBar=document.getElementById('assessBar'),aLbl=document.getElementById('assessLbl');
 var aBack=document.getElementById('assessBack'),aNext=document.getElementById('assessNext'),aNav=document.getElementById('assessNav');
 
@@ -904,14 +918,19 @@ function finish(){
 function collectAnswers(){
   var out={first:val('f_first'),email:val('f_email'),phone:val('f_phone'),sms_consent:document.getElementById('f_sms').checked,sms_consent_text:document.getElementById('f_sms_text').textContent.trim(),sms_consent_at:(document.getElementById('f_sms').checked?new Date().toISOString():''),
     full_name:val('f_first'),source:'SYCCO Roadmap Assessment',page:location.href,
-    submitted_at:new Date().toISOString(),responses:[]};
+    submitted_at:new Date().toISOString(),responses:[],mentor_match_signals:''};
   steps.forEach(function(s){
     if(s.dataset.step==='1'||s.dataset.step==='final')return;
     var qEl=s.querySelector('h3');var q=qEl?qEl.textContent.trim():('Step '+s.dataset.step);
     var picks=[];s.querySelectorAll('.opt.sel').forEach(function(o){picks.push(o.textContent.trim());});
     if(picks.length)out.responses.push({step:s.dataset.step,question:q,answers:picks});
   });
+  out.mentor_match_signals=getMentorMatchSignals();
   return out;
+}
+function getMentorMatchSignals(){
+  var selected=document.querySelector('[data-mentor-signals].sel');
+  return selected?selected.getAttribute('data-mentor-signals'):'';
 }
 function val(id){return document.getElementById(id).value.trim();}
 
