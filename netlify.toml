@@ -14,11 +14,6 @@ from = "/api/generate-creative"
 to = "/.netlify/functions/generate-creative"
 status = 200
 
-[[redirects]]
-from = "/san-diego"
-to = "/san-diego.html"
-status = 200
-
 [[headers]]
 for = "/.netlify/functions/*"
   [headers.values]
