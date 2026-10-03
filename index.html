@@ -898,6 +898,9 @@ function assessNext(){
     var fn=document.getElementById('f_first').value.trim();
     var em=document.getElementById('f_email').value.trim();
     if(!fn||!em||em.indexOf('@')<1){alert('Please enter your first name and a valid email to continue.');return;}
+    var smsOptedIn=document.getElementById('f_sms').checked;
+    var mobileDigits=document.getElementById('f_phone').value.replace(/\D/g,'');
+    if(smsOptedIn&&mobileDigits.length<10){alert('Please enter a valid mobile number to receive text reminders, or uncheck the text-message box to continue by email only.');return;}
   }
   if(cur<totalSteps){goStep(cur+1);}
   else{finish();}
@@ -917,10 +920,11 @@ function finish(){
 }
 function collectAnswers(){
   var smsOptedIn=document.getElementById('f_sms').checked;
+  var mobileDigits=val('f_phone').replace(/\D/g,'');
   var eventQrTraffic=(new URLSearchParams(location.search)).get('utm_campaign')==='san-diego-mentor-intro';
   // This custom field is the dedicated entry condition for the event SMS workflow.
-  // Non-event assessment traffic does not alter it, even if an SMS disclosure is accepted.
-  var eventSmsConsent=eventQrTraffic&&smsOptedIn;
+  // Non-event traffic and opt-ins without a usable mobile number cannot enter the SMS workflow.
+  var eventSmsConsent=eventQrTraffic&&smsOptedIn&&mobileDigits.length>=10;
   var out={first:val('f_first'),email:val('f_email'),phone:val('f_phone'),sms_consent:(eventSmsConsent?'true':''),sms_consent_text:document.getElementById('f_sms_text').textContent.trim(),sms_consent_at:(eventSmsConsent?new Date().toISOString():''),
     full_name:val('f_first'),source:'SYCCO Roadmap Assessment',page:location.href,
     submitted_at:new Date().toISOString(),responses:[],mentor_match_signals:''};
