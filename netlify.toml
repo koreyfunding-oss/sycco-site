@@ -10,12 +10,17 @@
   status = 200
 
 [[redirects]]
-  from = "/api/generate-creative"
-  to = "/.netlify/functions/generate-creative"
-  status = 200
+from = "/api/generate-creative"
+to = "/.netlify/functions/generate-creative"
+status = 200
+
+[[redirects]]
+from = "/san-diego"
+to = "/san-diego.html"
+status = 200
 
 [[headers]]
-  for = "/.netlify/functions/*"
+for = "/.netlify/functions/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Headers = "Content-Type"

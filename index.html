@@ -856,6 +856,7 @@ feats.forEach(function(f,i){
 var aOverlay=document.getElementById('assessOverlay');
 var steps=document.querySelectorAll('.assess-step');
 var totalSteps=8;var cur=1;
+var eventMentorFlow=(new URLSearchParams(location.search)).get('utm_campaign')==='san-diego-mentor-intro';
 var aBar=document.getElementById('assessBar'),aLbl=document.getElementById('assessLbl');
 var aBack=document.getElementById('assessBack'),aNext=document.getElementById('assessNext'),aNav=document.getElementById('assessNav');
 
@@ -888,7 +889,7 @@ function goStep(n){
   aBar.style.width=Math.round(n/totalSteps*100)+'%';
   aLbl.textContent='Step '+n+' of '+totalSteps;
   aBack.style.visibility=n>1?'visible':'hidden';
-  aNext.innerHTML=(n===totalSteps?'Build My Roadmap':'Continue')+' <span class="arrow">\u2192</span>';
+  aNext.innerHTML=(n===totalSteps?(eventMentorFlow?'Find My Mentor':'Build My Roadmap'):'Continue')+' <span class="arrow">→</span>';
   document.querySelector('.assess-card').scrollTop=0;
 }
 function assessPrev(){if(cur>1)goStep(cur-1);}
@@ -943,6 +944,27 @@ function getMentorMatchSignals(){
 }
 function val(id){return document.getElementById(id).value.trim();}
 
+/* Event-specific handoff: the public San Diego landing page opens the
+   established assessment directly while preserving the existing webhook flow. */
+(function configureEventMentorExperience(){
+  if(!eventMentorFlow)return;
+  var stepOne=document.querySelector('.assess-step[data-step="1"]');
+  var finalStep=document.querySelector('.assess-step[data-step="final"]');
+  if(stepOne){
+    var eyebrow=stepOne.querySelector('.eyebrow'),title=stepOne.querySelector('h3'),sub=stepOne.querySelector('.sub');
+    if(eyebrow)eyebrow.textContent='Your Mentor Match';
+    if(title)title.textContent='First, help us introduce you to the mentor who fits how you move.';
+    if(sub)sub.textContent='A few quick details let us personalize your mentor introduction and send it to you.';
+  }
+  if(finalStep){
+    var finalCopy=finalStep.querySelector('p');
+    if(finalCopy)finalCopy.textContent='Based on what you shared, SYCCO is preparing your personalized mentor introduction and secure next steps.';
+  }
+  if((new URLSearchParams(location.search)).get('open_assessment')==='1'){
+    window.addEventListener('load',function(){setTimeout(openAssess,80);});
+  }
+})();
+
 /* option selection: multi vs single */
 document.querySelectorAll('.opt-grid').forEach(function(grid){
   var single=grid.hasAttribute('data-single');
@@ -985,6 +1007,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&aOverlay.cl
     if(launcher && cw && cw.getAttribute('data-active')==='true'){opened=true;return;}
     if(tries<40)setTimeout(tryOpen,500); // retry up to ~20s while widget loads
   }
+  if((new URLSearchParams(location.search)).get('open_assessment')==='1')return;
   window.addEventListener('load',function(){setTimeout(tryOpen,DELAY);});
 })();
 </script>
