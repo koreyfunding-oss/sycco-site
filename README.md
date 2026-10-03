@@ -8,7 +8,7 @@ Static site files for the SYCCO ecosystem.
 |---|---|---|
 | `index.html` | `/` | Main landing page — 12-month wealth roadmap assessment |
 | `affiliates.html` | `/affiliates` | Affiliate program — 40% commission model |
-| `san-diego/index.html` | `/san-diego/` | USC + San Diego mentor-first event landing page |
+| `san-diego/index.html` | `/san-diego/` | San Diego State University mentor-first event landing page |
 | `favicon.svg` | `/favicon.svg` | SYCCO "S" favicon |
  
 ## What's included
