@@ -916,7 +916,12 @@ function finish(){
   submitToGHL(window.syccoAnswers);
 }
 function collectAnswers(){
-  var out={first:val('f_first'),email:val('f_email'),phone:val('f_phone'),sms_consent:document.getElementById('f_sms').checked,sms_consent_text:document.getElementById('f_sms_text').textContent.trim(),sms_consent_at:(document.getElementById('f_sms').checked?new Date().toISOString():''),
+  var smsOptedIn=document.getElementById('f_sms').checked;
+  var eventQrTraffic=(new URLSearchParams(location.search)).get('utm_campaign')==='san-diego-mentor-intro';
+  // This custom field is the dedicated entry condition for the event SMS workflow.
+  // Non-event assessment traffic does not alter it, even if an SMS disclosure is accepted.
+  var eventSmsConsent=eventQrTraffic&&smsOptedIn;
+  var out={first:val('f_first'),email:val('f_email'),phone:val('f_phone'),sms_consent:(eventSmsConsent?'true':''),sms_consent_text:document.getElementById('f_sms_text').textContent.trim(),sms_consent_at:(eventSmsConsent?new Date().toISOString():''),
     full_name:val('f_first'),source:'SYCCO Roadmap Assessment',page:location.href,
     submitted_at:new Date().toISOString(),responses:[],mentor_match_signals:''};
   steps.forEach(function(s){
